@@ -1,6 +1,8 @@
 # TODO
 
+- create parent build and write readme
 - Investigate pnpm workspaces and merge deps for socket.io
+- add docker
 
 ## UI
 
