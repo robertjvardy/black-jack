@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start:server": "node --no-warnings=ExperimentalWarning --watch --loader ts-node/esm server.ts",
+    "start": "node --no-warnings=ExperimentalWarning --watch --loader ts-node/esm ./src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

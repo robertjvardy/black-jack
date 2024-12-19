@@ -2,13 +2,14 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
+import { checkGameStarted } from "./game";
 
 const PORT = 8080;
 const app = express();
 
 const corsOptions = {
   origin: "http://localhost:3000",
-  credentials: true, //access-control-allow-credentials:true
+  credentials: true,
   optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
@@ -21,24 +22,26 @@ const io = new Server(httpServer, {
 io.on("connection", (socket) => {
   console.log(`Connected ${socket.id}`);
 
+  if (checkGameStarted()) {
+    socket.send(checkGameStarted());
+  }
+
   socket.on("ping", (cb) => {
     console.log("PING");
     cb();
   });
+
+  socket.on("init-game", () => {});
 
   socket.on("disconnect", () => {
     console.log(`disconnect ${socket.id}`);
   });
 });
 
-httpServer.listen({ port: PORT }, () => {
-  console.log(`Listening on port: ${PORT}`);
-});
-
 app.get("/test", (req, res) => {
   res.send(`this is a test`);
 });
 
-app.listen(PORT + 1, () => {
-  console.log(`server is running on port ${PORT + 1}`);
+httpServer.listen({ port: PORT, hostname: "0.0.0.0" }, () => {
+  console.log(`Listening on port: ${PORT}`);
 });

@@ -1,6 +1,4 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import { io } from "socket.io-client";
 import "./App.css";
 import axios from "axios";
@@ -26,7 +24,7 @@ function App() {
   };
 
   const handleApiCall = async () => {
-    const response = await axios.get("http://localhost:8081/test");
+    const response = await axios.get("http://localhost:8080/test");
     console.log(response.data);
   };
 
