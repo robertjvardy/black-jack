@@ -1,0 +1,57 @@
+.board {
+  height: 100%;
+  width: 100%;
+  background-color: #006400;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .dealer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+    height: 60%;
+
+    .hand {
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      height: 35vh;
+      width: 15vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .game-info {
+      h1 {
+        font-size: 5rem;
+      }
+      h5 {
+        font-size: 2rem;
+      }
+
+      .ribbon {
+        font-size: 4rem;
+      }
+    }
+  }
+
+  .players {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    height: 35%;
+    width: 95%;
+    margin: 0 auto;
+    gap: 1rem;
+
+    .player {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+  }
+}

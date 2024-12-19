@@ -1,45 +1,45 @@
-import { useState } from "react";
-import { io } from "socket.io-client";
 import "./App.css";
-import axios from "axios";
+import { QueryClientProvider } from "@tanstack/react-query";
+import queryClient from "./queryClient";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+import { useInitQuery } from "./queries";
+import { Suspense } from "react";
+import Landing from "./scenes/Landing";
+import Board from "./scenes/Board";
+import SocketProvider from "./context/SocketContext";
+import Loader from "./components/Loader";
 
-const socket = io("ws://localhost:8080/", {});
-
-socket.on("connect", () => {
-  console.log(`connect ${socket.id}`);
-});
-
-socket.on("disconnect", () => {
-  console.log(`disconnect`);
-});
-
-function App() {
-  const [count, setCount] = useState(0);
-
-  const emitAction = () => {
-    const start = Date.now();
-    socket.emit("ping", () => {
-      console.log(`pong (latency: ${Date.now() - start} ms)`);
-    });
-  };
-
-  const handleApiCall = async () => {
-    const response = await axios.get("http://localhost:8080/test");
-    console.log(response.data);
-  };
-
+const Router = () => {
+  const { data } = useInitQuery();
   return (
-    <>
-      <h1>Sockets project</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <button onClick={emitAction}>Emit Action</button>
-        <button onClick={handleApiCall}>Hit Api</button>
-      </div>
-    </>
+    <Routes>
+      <Route path="/" element={<Navigate to="/home" />} />
+      <Route path="home" element={<Landing isStarted={data.started} />} />
+      {data.started && (
+        <Route
+          path="board"
+          element={
+            <SocketProvider>
+              <Board />
+            </SocketProvider>
+          }
+        />
+      )}
+      {data.started && <Route path="play" element={<div>Play</div>} />}
+    </Routes>
   );
-}
+};
+
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Suspense fallback={<Loader />}>
+          <Router />
+        </Suspense>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

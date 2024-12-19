@@ -1,8 +1,16 @@
 {
-    "compilerOptions": {
-      "outDir": "dist",
-      "target": "es2022",
-      "module": "esnext",
-      "moduleResolution": "node"
-    }
-  }
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Node", // Ensures compatibility with Node.js imports.
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true, // Enable all strict type-checking options.
+    "esModuleInterop": true, // Enables default import compatibility.
+    "skipLibCheck": true, // Skip type checking for libraries.
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
