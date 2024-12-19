@@ -5,7 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { useInitQuery } from "./queries";
 import { Suspense } from "react";
 import Landing from "./scenes/Landing";
-import Board from "./scenes/Board";
+import Table from "./scenes/Table";
 import SocketProvider from "./context/SocketContext";
 import Loader from "./components/Loader";
 
@@ -17,10 +17,10 @@ const Router = () => {
       <Route path="home" element={<Landing isStarted={data.started} />} />
       {data.started && (
         <Route
-          path="board"
+          path="table"
           element={
             <SocketProvider>
-              <Board />
+              <Table />
             </SocketProvider>
           }
         />

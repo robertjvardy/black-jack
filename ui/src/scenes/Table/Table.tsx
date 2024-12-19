@@ -6,7 +6,7 @@ import { GameStateType } from "../../shared/types";
 import Player from "./components/Player";
 import Loader from "../../components/Loader";
 
-const Board = () => {
+const Table = () => {
   const [gameState, setGameState] = useState<GameStateType>();
   const socket = useSocket();
   invariant(socket, "Socket is null");
@@ -16,7 +16,7 @@ const Board = () => {
       console.log("Game State: ", state);
       setGameState(state);
     };
-    socket.emit("init-board");
+    socket.emit("init-table");
     socket.on("update", updateState);
     return () => {
       socket.off("update", updateState);
@@ -24,7 +24,7 @@ const Board = () => {
   }, [socket]);
 
   return (
-    <div className={styles.board}>
+    <div className={styles.table}>
       {gameState ? (
         <>
           <div className={styles.dealer}>
@@ -63,4 +63,4 @@ const Board = () => {
   );
 };
 
-export default Board;
+export default Table;

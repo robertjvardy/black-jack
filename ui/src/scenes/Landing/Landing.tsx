@@ -9,7 +9,7 @@ const Join = () => {
       <h2>Theres a game in progress!</h2>
       <div className={styles["btn-container"]}>
         <button onClick={() => navigate("/play")}>Join Table</button>
-        <button onClick={() => navigate("/board")}>View the Table</button>
+        <button onClick={() => navigate("/table")}>View the Table</button>
       </div>
     </div>
   );

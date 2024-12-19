@@ -29,8 +29,8 @@ io.on("connection", (socket) => {
     cb();
   });
 
-  socket.on("init-board", () => {
-    console.log("Init Board");
+  socket.on("init-table", () => {
+    console.log("Init table");
     socket.emit("update", game.fetchGameState());
   });
 
