@@ -13,12 +13,13 @@ const Seat = ({ index, present }: { index: number; present: boolean }) => {
   invariant(socket, "Socket is null");
   const handleClick = () => socket.emit("assign-player", { index });
   return (
-    <div
+    <button
+      disabled={present}
       className={classNames(styles.seat, { [styles.disabled]: present })}
       onClick={handleClick}
     >
       {index + 1}
-    </div>
+    </button>
   );
 };
 
@@ -44,7 +45,7 @@ const SeatAssignment = () => {
       <h1>Select a Seat</h1>
       <div className={styles["seat-selection-container"]}>
         {playerState.map((player: PlayerType) => (
-          <Seat {...player} />
+          <Seat {...player} key={player.index} />
         ))}
       </div>
     </div>

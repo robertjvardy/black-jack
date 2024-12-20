@@ -25,11 +25,6 @@ const game = new Game();
 io.on("connection", (socket) => {
   console.log(`Connected ${socket.id}`);
 
-  socket.on("ping", (cb) => {
-    console.log("PING");
-    cb();
-  });
-
   socket.on("init-table", () => {
     console.log("Init table");
     socket.emit("update", game.fetchGameState());
@@ -37,13 +32,9 @@ io.on("connection", (socket) => {
 
   socket.on("assign-player", (data) => {
     const playerIndex = data.index;
-    if (game.fetchPlayerPresent(playerIndex)) {
-      // return an error
-    }
-    game.assignPlayer(playerIndex);
+    const seatKey = game.assignPlayer(playerIndex);
     console.log(`Player ${data.index} assigned`);
-
-    // this sends to all other sockets, but we need to include the sender
+    socket.emit("seat-key", { seatKey });
     io.emit("player-update", game.fetchGameState().players);
   });
 
@@ -61,19 +52,6 @@ app.get("/state", (req, res) => {
 app.post("/start", (req, res) => {
   game.startGame();
   res.status(200).send();
-});
-
-app.post("/assignPlayer/:index", (req, res) => {
-  try {
-    const playerIndex = parseInt(req.params.index);
-    if (game.fetchPlayerPresent(playerIndex)) {
-      res.status(200).json({ success: false });
-    }
-    game.assignPlayer(playerIndex);
-    res.status(200).json({ success: true });
-  } catch (error) {
-    res.status(500).send(error);
-  }
 });
 
 app.get("/restart", (req, res) => {

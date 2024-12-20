@@ -16,25 +16,12 @@ const Router = () => {
     <Routes>
       <Route path="/" element={<Navigate to="/home" />} />
       <Route path="home" element={<Landing isStarted={data.started} />} />
+      {!data.started && <Route path="*" element={<Navigate to="/home" />} />}
       {data.started && (
-        <Route
-          path="table"
-          element={
-            <SocketProvider>
-              <Table />
-            </SocketProvider>
-          }
-        />
-      )}
-      {data.started && (
-        <Route
-          path="player/*"
-          element={
-            <SocketProvider>
-              <Player />
-            </SocketProvider>
-          }
-        />
+        <>
+          <Route path="table" element={<Table />} />
+          <Route path="player/*" element={<Player />} />
+        </>
       )}
     </Routes>
   );
@@ -45,7 +32,9 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Suspense fallback={<Loader />}>
-          <Router />
+          <SocketProvider>
+            <Router />
+          </SocketProvider>
         </Suspense>
       </BrowserRouter>
     </QueryClientProvider>

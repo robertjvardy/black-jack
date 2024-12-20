@@ -34,16 +34,3 @@ export const useStartGameMutation = () =>
       queryClient.invalidateQueries({ queryKey: queryKeys.init });
     },
   });
-
-const assignSeat = async (index: number) => {
-  const response = await apiClient.post(`/assignPlayer/${index}`);
-  return response.data;
-};
-
-export const useAssignSeatMutation = () =>
-  useMutation({
-    mutationFn: assignSeat,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.init });
-    },
-  });

@@ -45,7 +45,8 @@ class Game {
   }
 
   assignPlayer(index: number) {
-    this.gameState.players[index].assign();
+    const player = this.gameState.players[index];
+    return player.assign();
   }
 }
 
