@@ -13,6 +13,7 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
+app.use(express.json());
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -41,13 +42,26 @@ io.on("connection", (socket) => {
 
 // TODO move to controller
 
-app.get("/init", (req, res) => {
+app.get("/state", (req, res) => {
   res.send(game.fetchGameState());
 });
 
 app.post("/start", (req, res) => {
   game.startGame();
   res.status(200).send();
+});
+
+app.post("/assignPlayer/:index", (req, res) => {
+  try {
+    const playerIndex = parseInt(req.params.index);
+    if (game.fetchPlayerPresent(playerIndex)) {
+      res.status(200).json({ success: false });
+    }
+    game.assignPlayer(playerIndex);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 app.get("/restart", (req, res) => {

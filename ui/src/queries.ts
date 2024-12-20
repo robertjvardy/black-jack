@@ -11,15 +11,15 @@ export const queryKeys: Record<string, QueryKey> = {
   init: ["init"],
 };
 
-const init = async () => {
-  const response = await apiClient.get<GameStateType>("/init");
+const fetchGameState = async () => {
+  const response = await apiClient.get<GameStateType>("/state");
   return response.data;
 };
 
-export const useInitQuery = () =>
+export const useFetchGameStateQuery = () =>
   useSuspenseQuery<GameStateType>({
     queryKey: queryKeys.init,
-    queryFn: init,
+    queryFn: fetchGameState,
   });
 
 const startGame = async () => {
@@ -30,6 +30,19 @@ const startGame = async () => {
 export const useStartGameMutation = () =>
   useMutation({
     mutationFn: startGame,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.init });
+    },
+  });
+
+const assignSeat = async (index: number) => {
+  const response = await apiClient.post(`/assignPlayer/${index}`);
+  return response.data;
+};
+
+export const useAssignSeatMutation = () =>
+  useMutation({
+    mutationFn: assignSeat,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.init });
     },

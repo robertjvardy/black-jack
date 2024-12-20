@@ -7,7 +7,14 @@ export type GameStateType = {
 
 const defaultGameState = {
   started: false,
-  players: [],
+  players: [
+    new Player(0),
+    new Player(1),
+    new Player(2),
+    new Player(3),
+    new Player(4),
+    new Player(5),
+  ],
 };
 
 class Game {
@@ -27,6 +34,18 @@ class Game {
 
   fetchGameState() {
     return this.gameState;
+  }
+
+  fetchPlayerState(index: number) {
+    return this.gameState.players[index];
+  }
+
+  fetchPlayerPresent(index: number) {
+    return this.gameState.players[index].present;
+  }
+
+  assignPlayer(index: number) {
+    this.gameState.players[index].assign();
   }
 }
 

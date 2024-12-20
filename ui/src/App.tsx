@@ -2,15 +2,16 @@ import "./App.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./queryClient";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import { useInitQuery } from "./queries";
+import { useFetchGameStateQuery } from "./queries";
 import { Suspense } from "react";
 import Landing from "./scenes/Landing";
 import Table from "./scenes/Table";
 import SocketProvider from "./context/SocketContext";
 import Loader from "./components/Loader";
+import Player from "./scenes/Player";
 
 const Router = () => {
-  const { data } = useInitQuery();
+  const { data } = useFetchGameStateQuery();
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/home" />} />
@@ -25,7 +26,7 @@ const Router = () => {
           }
         />
       )}
-      {data.started && <Route path="play" element={<div>Play</div>} />}
+      {data.started && <Route path="player/*" element={<Player />} />}
     </Routes>
   );
 };

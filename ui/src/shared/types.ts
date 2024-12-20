@@ -1,8 +1,8 @@
-export type Player = {
+export type PlayerType = {
   index: number;
 };
 
 export type GameStateType = {
   started: boolean;
-  players: Player[];
+  players: PlayerType[];
 };
