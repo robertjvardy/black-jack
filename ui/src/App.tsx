@@ -26,7 +26,16 @@ const Router = () => {
           }
         />
       )}
-      {data.started && <Route path="player/*" element={<Player />} />}
+      {data.started && (
+        <Route
+          path="player/*"
+          element={
+            <SocketProvider>
+              <Player />
+            </SocketProvider>
+          }
+        />
+      )}
     </Routes>
   );
 };

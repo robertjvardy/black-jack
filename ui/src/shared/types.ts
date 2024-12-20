@@ -1,5 +1,6 @@
 export type PlayerType = {
   index: number;
+  present: boolean;
 };
 
 export type GameStateType = {

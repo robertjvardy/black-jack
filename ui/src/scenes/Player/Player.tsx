@@ -1,13 +1,17 @@
 import { Navigate, Route, Routes } from "react-router";
-import { useAssignSeatMutation, useFetchGameStateQuery } from "../../queries";
-import { Suspense } from "react";
+import { useFetchGameStateQuery } from "../../queries";
+import { Suspense, useEffect, useState } from "react";
 import Loader from "../../components/Loader";
 import styles from "./styles.module.scss";
 import classNames from "classnames";
+import { PlayerType } from "../../shared/types";
+import { useSocket } from "../../context/SocketContext";
+import invariant from "tiny-invariant";
 
 const Seat = ({ index, present }: { index: number; present: boolean }) => {
-  const { mutate } = useAssignSeatMutation();
-  const handleClick = () => mutate(index);
+  const socket = useSocket();
+  invariant(socket, "Socket is null");
+  const handleClick = () => socket.emit("assign-player", { index });
   return (
     <div
       className={classNames(styles.seat, { [styles.disabled]: present })}
@@ -20,12 +24,26 @@ const Seat = ({ index, present }: { index: number; present: boolean }) => {
 
 const SeatAssignment = () => {
   const { data } = useFetchGameStateQuery();
+  const [playerState, setPlayerState] = useState<PlayerType[]>(data.players);
+  const socket = useSocket();
+  invariant(socket, "Socket is null");
+
+  useEffect(() => {
+    const updateState = (state: PlayerType[]) => {
+      console.log("Player State: ", state);
+      setPlayerState(state);
+    };
+    socket.on("player-update", updateState);
+    return () => {
+      socket.off("player-update", updateState);
+    };
+  }, [socket]);
+
   return (
     <div className={styles.container}>
       <h1>Select a Seat</h1>
-
       <div className={styles["seat-selection-container"]}>
-        {data.players.map((player) => (
+        {playerState.map((player: PlayerType) => (
           <Seat {...player} />
         ))}
       </div>

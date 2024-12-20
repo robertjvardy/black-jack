@@ -35,6 +35,18 @@ io.on("connection", (socket) => {
     socket.emit("update", game.fetchGameState());
   });
 
+  socket.on("assign-player", (data) => {
+    const playerIndex = data.index;
+    if (game.fetchPlayerPresent(playerIndex)) {
+      // return an error
+    }
+    game.assignPlayer(playerIndex);
+    console.log(`Player ${data.index} assigned`);
+
+    // this sends to all other sockets, but we need to include the sender
+    io.emit("player-update", game.fetchGameState().players);
+  });
+
   socket.on("disconnect", () => {
     console.log(`disconnect ${socket.id}`);
   });
