@@ -1,16 +1,18 @@
-import { Navigate, Route, Routes } from "react-router";
-import { Suspense } from "react";
-import Loader from "../../components/Loader";
-import styles from "./styles.module.scss";
 import classNames from "classnames";
-import { PlayerType } from "../../shared/types";
 import { useGameContext } from "../../context/SocketContext";
+import { PlayerType } from "../../shared/types";
+import styles from "./styles.module.scss";
+import { useNavigate } from "react-router";
 
 const Seat = ({ index, present }: { index: number; present: boolean }) => {
   const {
     actions: { assignPlayer },
   } = useGameContext();
-  const handleClick = () => assignPlayer(index);
+  const navigate = useNavigate();
+  const handleClick = () => {
+    assignPlayer(index);
+    navigate("/playerControls");
+  };
   return (
     <button
       disabled={present}
@@ -36,25 +38,4 @@ const SeatAssignment = () => {
   );
 };
 
-const Controls = () => {
-  return <div></div>;
-};
-
-const Player = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Navigate to="seatAssignment" />} />
-      <Route
-        path="seatAssignment"
-        element={
-          <Suspense fallback={<Loader />}>
-            <SeatAssignment />
-          </Suspense>
-        }
-      />
-      <Route path="controls" element={<Controls />} />
-    </Routes>
-  );
-};
-
-export default Player;
+export default SeatAssignment;

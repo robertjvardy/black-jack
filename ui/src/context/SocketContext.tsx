@@ -42,6 +42,7 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [gameState, setGameState] = useState<GameStateType>(defaultGameState);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [seatKey, setSeatKey] = useState<string>();
+  // TODO implement state for player index
 
   useEffect(() => {
     const socketInstance = io(SOCKET_URL, {

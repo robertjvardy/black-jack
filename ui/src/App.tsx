@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./queryClient";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
@@ -7,7 +7,9 @@ import Landing from "./scenes/Landing";
 import Table from "./scenes/Table";
 import SocketProvider, { useGameContext } from "./context/SocketContext";
 import Loader from "./components/Loader";
-import Player from "./scenes/Player";
+import Player from "./scenes/PlayerControls";
+import SeatAssignment from "./scenes/SeatAssignment";
+import PlayerControls from "./scenes/PlayerControls";
 
 const Router = () => {
   const { gameState } = useGameContext();
@@ -15,6 +17,9 @@ const Router = () => {
     <Routes>
       <Route path="/" element={<Navigate to="/home" />} />
       <Route path="home" element={<Landing />} />
+      <Route path="home/seatAssignment" element={<SeatAssignment />} />
+
+      <Route path="playerControls" element={<PlayerControls />} />
       {!gameState.started && (
         <Route path="*" element={<Navigate to="/home" />} />
       )}

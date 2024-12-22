@@ -20,6 +20,9 @@ const Table = () => {
           </div>
           <div className={styles.players}>
             <div className={styles.player}>
+              <Player {...gameState?.players[0]} />
+            </div>
+            <div className={styles.player}>
               <Player {...gameState?.players[1]} />
             </div>
             <div className={styles.player}>
@@ -33,9 +36,6 @@ const Table = () => {
             </div>
             <div className={styles.player}>
               <Player {...gameState?.players[5]} />
-            </div>
-            <div className={styles.player}>
-              <Player {...gameState?.players[6]} />
             </div>
           </div>
         </>
