@@ -26,11 +26,6 @@ io.on("connection", (socket) => {
   console.log(`Connected ${socket.id}`);
   socket.emit("update", game.fetchGameState());
 
-  socket.on("init-table", () => {
-    console.log("Init table");
-    socket.emit("update", game.fetchGameState());
-  });
-
   socket.on("assign-player", (data) => {
     const playerIndex = data.index;
     const seatKey = game.assignPlayer(playerIndex);

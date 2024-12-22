@@ -1,18 +1,10 @@
-import { useEffect } from "react";
 import { useGameContext } from "../../context/SocketContext";
-import invariant from "tiny-invariant";
 import styles from "./styles.module.scss";
 import Player from "./components/Player";
 import Loader from "../../components/Loader";
 
 const Table = () => {
-  const { socket, gameState } = useGameContext();
-  invariant(socket, "Socket is null");
-
-  useEffect(() => {
-    // TODO create action in context to hide this implementation
-    socket.emit("init-table");
-  }, [socket]);
+  const { gameState } = useGameContext();
 
   return (
     <div className={styles.table}>
