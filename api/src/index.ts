@@ -24,6 +24,7 @@ const game = new Game();
 
 io.on("connection", (socket) => {
   console.log(`Connected ${socket.id}`);
+  socket.emit("update", game.fetchGameState());
 
   socket.on("init-table", () => {
     console.log("Init table");
@@ -38,20 +39,19 @@ io.on("connection", (socket) => {
     io.emit("player-update", game.fetchGameState().players);
   });
 
+  socket.on("start-game", () => {
+    game.startGame();
+    io.emit("update", game.fetchGameState());
+  });
+
   socket.on("disconnect", () => {
     console.log(`disconnect ${socket.id}`);
   });
 });
 
-// TODO move to controller
-
+// TODO remove after dev
 app.get("/state", (req, res) => {
   res.send(game.fetchGameState());
-});
-
-app.post("/start", (req, res) => {
-  game.startGame();
-  res.status(200).send();
 });
 
 app.get("/restart", (req, res) => {

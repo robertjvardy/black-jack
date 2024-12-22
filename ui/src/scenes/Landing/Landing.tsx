@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import styles from "./styles.module.scss";
-import { useStartGameMutation } from "../../queries";
+import { useGameContext } from "../../context/SocketContext";
 
 const Join = () => {
   const navigate = useNavigate();
@@ -16,23 +16,24 @@ const Join = () => {
 };
 
 const Start = () => {
-  const { mutate } = useStartGameMutation();
+  const { actions } = useGameContext();
   return (
     <div>
       <h2>You're the first one here!</h2>
 
-      <button onClick={() => mutate()}>Start a Game</button>
+      <button onClick={() => actions.startGame()}>Start a Game</button>
     </div>
   );
 };
 
-const Landing = ({ isStarted }: { isStarted: boolean }) => {
+const Landing = () => {
+  const { gameState } = useGameContext();
   return (
     <div className={styles.container}>
       <h1>Welcome to Black Jack</h1>
       <div className={styles.options}>
-        {isStarted && <Join />}
-        {!isStarted && <Start />}
+        {gameState.started && <Join />}
+        {!gameState.started && <Start />}
       </div>
     </div>
   );

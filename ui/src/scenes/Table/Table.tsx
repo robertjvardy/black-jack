@@ -1,26 +1,17 @@
-import { useEffect, useState } from "react";
-import { useSocket } from "../../context/SocketContext";
+import { useEffect } from "react";
+import { useGameContext } from "../../context/SocketContext";
 import invariant from "tiny-invariant";
 import styles from "./styles.module.scss";
-import { GameStateType } from "../../shared/types";
 import Player from "./components/Player";
 import Loader from "../../components/Loader";
 
 const Table = () => {
-  const [gameState, setGameState] = useState<GameStateType>();
-  const socket = useSocket();
+  const { socket, gameState } = useGameContext();
   invariant(socket, "Socket is null");
 
   useEffect(() => {
-    const updateState = (state: GameStateType) => {
-      console.log("Game State: ", state);
-      setGameState(state);
-    };
+    // TODO create action in context to hide this implementation
     socket.emit("init-table");
-    socket.on("update", updateState);
-    return () => {
-      socket.off("update", updateState);
-    };
   }, [socket]);
 
   return (

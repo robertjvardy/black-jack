@@ -6,6 +6,16 @@
 - add docker
 - investigate: helmet morgan
 
+## Move the game state inside the react context
+
+- move the game state inside the react context
+- expose the game state from the context
+- with this, all listeners can be placed in the context
+- on connection, send the game state to the client so that it has the game state from the beginning
+- the api calls to fetch game state can be removed (saved for dev)
+- hide the implementation of the socket by exposing actions instead of sprinkling socket calls everywhere
+- maybe there wont even be a need for exposing the socket once thats done?
+
 ## Authentication
 
 - for now the user does not get redirected to the correct route to play
@@ -22,7 +32,7 @@
 
 After the above is completed:
 
-- create a second context to establish a connection to the authenticated namespace
+- create a second context "PlayerContext" to establish a connection to the authenticated namespace
 - wrap the controls sections in the authenticated context
 - create the name space on the server with the following code:
 
