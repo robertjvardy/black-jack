@@ -12,46 +12,17 @@
 
 ## Authentication
 
-- for now the user does not get redirected to the correct route to play
-- there is nothing stopping the user from manually going to the route
+- on seat assign create a jwt (currently implemented with uuid)
+- jwt is assigned to the player obj
+- jwt is then sent to the client
+- client stores it in local storage
+
 - implement the following:
-  - on seat assign create a jwt
-  - assign jwt to the player obj
-  - send the jwt to the UI
-  - ui should store it some how
-  - investigate best approach
-    - cookie vs local storage vs state
   - add the jwt to a header in all subsequent requests
   - on the api, restrict calls based on presence of jwt for the seat
+  - be sure to clear the local storage and emit to the server to free up the seat if the user closes the browser
 
-After the above is completed:
-
-- create a second context "PlayerContext" to establish a connection to the authenticated namespace
-- wrap the controls sections in the authenticated context
-- create the name space on the server with the following code:
-
-```ts
-const authenticatedNamespace = io.of("/authenticated");
-
-authenticatedNamespace.use((socket, next) => {
-  const token = socket.handshake.auth.token;
-
-  // Validate the token
-  if (token === "your-auth-token") {
-    return next();
-  }
-
-  return next(new Error("Authentication failed"));
-});
-
-authenticatedNamespace.on("connection", (socket) => {
-  console.log(`Authenticated client connected: ${socket.id}`);
-
-  socket.on("disconnect", () => {
-    console.log(`Client disconnected: ${socket.id}`);
-  });
-});
-```
+````
 
 ## UI
 
@@ -80,4 +51,4 @@ EXPOSE 8080
 
 # Run the server
 CMD ["npm", "start"]
-```
+````

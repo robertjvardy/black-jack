@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  font-size: 3rem;
+
+  &.player-present {
+    background-color: gold;
+
+    color: #006400;
+  }
+}

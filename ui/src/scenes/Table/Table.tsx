@@ -1,10 +1,10 @@
-import { useGameContext } from "../../context/SocketContext";
+import { useBaseContext } from "../../context/BaseContext";
 import styles from "./styles.module.scss";
 import Player from "./components/Player";
 import Loader from "../../components/Loader";
 
 const Table = () => {
-  const { gameState } = useGameContext();
+  const { gameState } = useBaseContext();
 
   return (
     <div className={styles.table}>

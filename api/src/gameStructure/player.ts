@@ -21,6 +21,10 @@ class Player {
     return this.#seatKey;
   }
 
+  validateSeatKey(key: string) {
+    return key === this.#seatKey;
+  }
+
   remove() {
     this.present = false;
     this.#seatKey = undefined;

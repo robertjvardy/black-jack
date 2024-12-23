@@ -1,17 +1,15 @@
 import classNames from "classnames";
-import { useGameContext } from "../../context/SocketContext";
+import { useBaseContext } from "../../context/BaseContext";
 import { PlayerType } from "../../shared/types";
 import styles from "./styles.module.scss";
-import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const Seat = ({ index, present }: { index: number; present: boolean }) => {
   const {
     actions: { assignPlayer },
-  } = useGameContext();
-  const navigate = useNavigate();
+  } = useBaseContext();
   const handleClick = () => {
     assignPlayer(index);
-    navigate("/playerControls");
   };
   return (
     <button
@@ -25,7 +23,15 @@ const Seat = ({ index, present }: { index: number; present: boolean }) => {
 };
 
 const SeatAssignment = () => {
-  const { gameState } = useGameContext();
+  const {
+    gameState,
+    actions: { verifyUserUnassigned },
+  } = useBaseContext();
+
+  useEffect(() => {
+    verifyUserUnassigned();
+  }, [verifyUserUnassigned]);
+
   return (
     <div className={styles.container}>
       <h1>Select a Seat</h1>

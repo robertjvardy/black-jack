@@ -48,6 +48,23 @@ class Game {
     const player = this.gameState.players[index];
     return player.assign();
   }
+
+  removePlayer({ seatIndex, seatKey }: { seatIndex: number; seatKey: string }) {
+    const player = this.gameState.players[seatIndex];
+    if (!!player) {
+      // TODO throw error
+    }
+    if (player.validateSeatKey(seatKey)) {
+      this.gameState.players[seatIndex] = new Player(seatIndex);
+    }
+  }
+
+  validateSeatKey(key: string): number | undefined {
+    const player = this.gameState.players.find((player) =>
+      player.validateSeatKey(key)
+    );
+    return player?.index;
+  }
 }
 
 export default Game;

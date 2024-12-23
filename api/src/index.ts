@@ -30,17 +30,58 @@ io.on("connection", (socket) => {
     const playerIndex = data.index;
     const seatKey = game.assignPlayer(playerIndex);
     console.log(`Player ${data.index} assigned`);
-    socket.emit("seat-key", { seatKey });
+    socket.emit("seat-key", { seatKey, seatIndex: playerIndex });
     io.emit("player-update", game.fetchGameState().players);
   });
 
   socket.on("start-game", () => {
     game.startGame();
+    io.emit("clear-local-storage");
     io.emit("update", game.fetchGameState());
+  });
+
+  socket.on("leave-seat", (data) => {
+    const seatIndex = parseInt(data.seatIndex);
+    const seatKey = data.seatKey;
+    game.removePlayer({ seatIndex, seatKey });
+    socket.emit("clear-local-storage");
+    io.emit("update", game.fetchGameState());
+  });
+
+  socket.on("validate-seat-key", (data) => {
+    console.log("validate-seat-key: ", data.seatKey);
+    const index = game.validateSeatKey(data.seatKey);
+    if (index !== undefined) {
+      socket.emit("seat-key-validated", { index });
+    } else {
+      socket.emit("seat-key-denied");
+    }
   });
 
   socket.on("disconnect", () => {
     console.log(`disconnect ${socket.id}`);
+  });
+});
+
+const playerNamespace = io.of("/player");
+
+playerNamespace.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+  console.log(token);
+
+  // Validate the token
+  if (game.validateSeatKey(token) !== undefined) {
+    return next();
+  }
+
+  return next(new Error("Authentication failed"));
+});
+
+playerNamespace.on("connection", (socket) => {
+  console.log(`Authenticated client connected: ${socket.id}`);
+
+  socket.on("disconnect", () => {
+    console.log(`Client disconnected: ${socket.id}`);
   });
 });
 
