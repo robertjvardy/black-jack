@@ -16,8 +16,7 @@ import {
   storeSeatIndex,
   storeSeatKey,
 } from "./localStorageUtils";
-
-const SOCKET_URL = import.meta.env.VITE_API_BASE_URL;
+import { API_ADDRESS } from "../shared/constants";
 
 export type BaseContextType = {
   socket?: Socket;
@@ -53,7 +52,7 @@ const BaseProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const socketInstance = io(SOCKET_URL, {
+    const socketInstance = io(API_ADDRESS, {
       transports: ["websocket"],
     });
 

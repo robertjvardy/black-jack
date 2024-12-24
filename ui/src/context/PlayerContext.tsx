@@ -7,8 +7,9 @@ import {
 } from "react";
 import io, { Socket } from "socket.io-client";
 import { GameStateType } from "../shared/types";
+import { API_ADDRESS } from "../shared/constants";
 
-const SOCKET_URL = `${import.meta.env.VITE_API_BASE_URL}/player`;
+const PLAYER_SOCKET_URL = `${API_ADDRESS}/player`;
 
 export type PlayerControlsContextType = {
   socket?: Socket;
@@ -27,8 +28,8 @@ export const usePlayerControlsContext = () => {
 const PlayerControlsProvider = ({
   children,
   seatKey,
-  gameState,
-}: {
+}: // TODO add gameState,
+{
   children: ReactNode;
   seatKey: string;
   gameState: GameStateType;
@@ -36,7 +37,7 @@ const PlayerControlsProvider = ({
   const [socket, setSocket] = useState<Socket>();
 
   useEffect(() => {
-    const socketInstance = io(SOCKET_URL, {
+    const socketInstance = io(PLAYER_SOCKET_URL, {
       transports: ["websocket"],
       auth: { token: seatKey },
     });

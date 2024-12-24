@@ -4,7 +4,9 @@ import { Server } from "socket.io";
 import cors from "cors";
 import Game from "./gameStructure/game";
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
+const HOST = process.env.HOST || "0.0.0.0";
+
 const app = express();
 
 const corsOptions = {
@@ -95,6 +97,6 @@ app.get("/restart", (req, res) => {
   res.status(200).send();
 });
 
-httpServer.listen({ port: PORT, hostname: "0.0.0.0" }, () => {
+httpServer.listen({ port: PORT, hostname: HOST }, () => {
   console.log(`Listening on port: ${PORT}`);
 });

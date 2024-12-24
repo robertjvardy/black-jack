@@ -6,15 +6,17 @@ This applications serves a game of black jack to devices on your network.
 
 ### UI
 
-`pnpm i`
-
-`pnpm start`
+```cmd
+pnpm i
+pnpm start
+```
 
 ### API
 
-`pnpm i`
-
-`pnpm start`
+```cmd
+pnpm i
+pnpm start
+```
 
 ## Implementation
 
