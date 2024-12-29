@@ -3,6 +3,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import Game from "./gameStructure/game";
+import { playerAuthMiddleware } from "./middlewares";
 
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || "0.0.0.0";
@@ -65,22 +66,21 @@ io.on("connection", (socket) => {
   });
 });
 
+// TODO move this namespace to seperate file and export game instance
+
 const playerNamespace = io.of("/player");
 
-playerNamespace.use((socket, next) => {
-  const token = socket.handshake.auth.token;
-  console.log(token);
-
-  // Validate the token
-  if (game.validateSeatKey(token) !== undefined) {
-    return next();
-  }
-
-  return next(new Error("Authentication failed"));
-});
+playerNamespace.use(playerAuthMiddleware(game));
 
 playerNamespace.on("connection", (socket) => {
   console.log(`Authenticated client connected: ${socket.id}`);
+
+  if (game.isHandInProgress()) {
+    socket.emit("pending-next-hand");
+  } else {
+    game.startHand();
+    io.emit("pending-bets");
+  }
 
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);

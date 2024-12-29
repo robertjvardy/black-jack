@@ -1,3 +1,4 @@
+import Hand from "./hand";
 import Player from "./player";
 
 export type GameStateType = {
@@ -19,6 +20,7 @@ const defaultGameState = {
 
 class Game {
   private gameState: GameStateType = defaultGameState;
+  private currentHand: Hand = new Hand();
 
   startGame() {
     this.gameState.started = true;
@@ -64,6 +66,18 @@ class Game {
       player.validateSeatKey(key)
     );
     return player?.index;
+  }
+
+  isTableEmpty() {
+    return this.gameState.players.some((player) => player.present);
+  }
+
+  isHandInProgress() {
+    return this.currentHand.inProgress;
+  }
+
+  startHand() {
+    return this.currentHand.startHand();
   }
 }
 
