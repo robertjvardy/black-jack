@@ -22,6 +22,40 @@
   - on the api, restrict calls based on presence of jwt for the seat
   - be sure to clear the local storage and emit to the server to free up the seat if the user closes the browser
 
+## Implement Game Set Up
+
+1. Game is Started
+2. Player Joins seat
+3. First player places a bet
+4. Count down starts for other players
+5. Count Down ends and the hand inProgress state is set to true
+6. Cards are delt
+
+## Implement Game Logic
+
+1. Insurance (dealers showing ace)
+
+   - Check for insurance elegability
+   - If eligable Offer insurance for 20 seconds
+   - once all players have answered or time expires continue
+   - check dealers hand
+   - pay out and end hand if 21
+
+2. Dealer Blackjack (dealers showing 10)
+
+   - check dealers hand
+   - end hand if 21
+
+3. Player Action
+
+4. Dealer Action
+
+5. Pay out players
+
+Action is to player in set with highest index
+
+## Add Docker
+
 ````
 
 ## UI
