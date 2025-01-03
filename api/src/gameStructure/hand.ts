@@ -1,19 +1,17 @@
-import { PlayerIndiciesType } from "../shared/types";
+import { HAND_STATUS_MAP } from "../shared/constants";
+import { HandStatusValuesType, PlayerIndiciesType } from "../shared/types";
 
 class Hand {
-  inProgress: boolean = false;
+  status: HandStatusValuesType = HAND_STATUS_MAP.pendingBets;
   players: PlayerIndiciesType[] = [];
+  pendingPlayer?: PlayerIndiciesType;
 
-  constructor(inProgress: boolean = false) {
-    this.inProgress = inProgress;
-  }
-
-  startHand() {
-    this.inProgress = true;
+  isHandStarted() {
+    return this.status !== HAND_STATUS_MAP.pendingBets;
   }
 
   addPlayer(playerIndex: PlayerIndiciesType) {
-    if (!this.players.includes(playerIndex) && !this.inProgress) {
+    if (!this.players.includes(playerIndex) && !this.isHandStarted()) {
       this.players = [...this.players, playerIndex].sort();
     }
   }

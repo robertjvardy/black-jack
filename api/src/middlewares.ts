@@ -11,5 +11,5 @@ export const playerAuthMiddleware =
       return next();
     }
 
-    return next(new Error("Authentication failed"));
+    return next(new Error("Seat Authentication failed"));
   };

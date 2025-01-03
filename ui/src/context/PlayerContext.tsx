@@ -8,6 +8,7 @@ import {
 import io, { Socket } from "socket.io-client";
 import { GameStateType } from "../shared/types";
 import { API_ADDRESS } from "../shared/constants";
+import { fetchSeatIndex } from "./localStorageUtils";
 
 const PLAYER_SOCKET_URL = `${API_ADDRESS}/player`;
 
@@ -28,8 +29,9 @@ export const usePlayerControlsContext = () => {
 const PlayerControlsProvider = ({
   children,
   seatKey,
-}: // TODO add gameState,
-{
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  gameState,
+}: {
   children: ReactNode;
   seatKey: string;
   gameState: GameStateType;
@@ -64,7 +66,12 @@ const PlayerControlsProvider = ({
     }
   }, [socket]);
 
-  const actions = {};
+  const handlePlaceBet = (betAmount: number) => {
+    const seatIndex = fetchSeatIndex();
+    socket?.emit("place-bet", { index: seatIndex, betAmount });
+  };
+
+  const actions = { placeBet: handlePlaceBet };
 
   return socket ? (
     <PlayerControlsContext.Provider value={{ socket, actions }}>
