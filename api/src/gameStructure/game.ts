@@ -1,9 +1,11 @@
+import { PlayerIndexType } from "../shared/types";
 import Hand from "./hand";
 import Player from "./player";
 
 export type GameStateType = {
   started: boolean;
   players: Player[];
+  currentHand: Hand;
 };
 
 const defaultGameState = {
@@ -16,11 +18,11 @@ const defaultGameState = {
     new Player(4),
     new Player(5),
   ],
+  currentHand: new Hand(),
 };
 
 class Game {
   private gameState: GameStateType = defaultGameState;
-  private currentHand: Hand = new Hand();
 
   startGame() {
     this.gameState.started = true;
@@ -73,11 +75,23 @@ class Game {
   }
 
   isHandInProgress() {
-    return this.currentHand.inProgress;
+    return this.gameState.currentHand.isHandStarted();
   }
 
-  startHand() {
-    return this.currentHand.startHand();
+  fetchHandState() {
+    return this.gameState.currentHand;
+  }
+
+  onPlayerBet(index: PlayerIndexType, betAmount: number) {
+    const player = this.gameState.players[index];
+    player.placeBet(betAmount);
+    const hand = this.gameState.currentHand;
+    hand.addPlayer(index);
+  }
+
+  onPlayerReady(index: PlayerIndexType) {
+    const player = this.gameState.players[index];
+    player.readyUp();
   }
 }
 

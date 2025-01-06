@@ -6,29 +6,86 @@
   h1 {
     font-size: 3rem;
     margin-top: 5rem;
-    margin-bottom: 200px;
   }
 
   .content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%;
     width: 95%;
     margin: 0 auto;
+
+    .inital-bet {
+      .title {
+        font-size: 2rem;
+        margin: 1rem 0 2rem;
+      }
+      .bet-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 0.5rem;
+        row-gap: 1rem;
+        justify-content: space-between;
+        width: 70%;
+        margin: 0 auto;
+
+        div:last-child {
+          grid-column: 1 / -1;
+          justify-self: center;
+        }
+      }
+
+      .ready-up-container {
+        margin-top: 4rem;
+        button {
+          background-color: green;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  .footer {
+    margin-top: auto;
+    margin-bottom: 2rem;
 
     .leave-btn {
       margin: 0 auto;
       width: 10rem;
       background-color: red;
+      font-weight: 700;
     }
   }
+}
 
-  @media (min-width: 1024px) {
-    .content {
-      width: 90%;
-      max-width: 700px;
-      padding: 1rem;
-      margin: 0 auto 5rem;
+@media (min-width: 1024px) {
+  .content {
+    width: 90%;
+    max-width: 700px;
+    padding: 1rem;
+    margin: 0 auto 3rem;
+
+    .inital-bet {
+      .control-content {
+        .title {
+          font-size: 2rem;
+          margin: 5rem 0;
+        }
+        .bet-options {
+          display: flex;
+          justify-content: space-between;
+          width: 90%;
+          margin: 0 auto;
+        }
+
+        .ready-up-container {
+          margin-top: 4rem;
+        }
+      }
+    }
+    .footer {
+      margin: 1rem auto 0;
     }
   }
 }

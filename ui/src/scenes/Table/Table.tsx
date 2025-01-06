@@ -5,7 +5,7 @@ import Loader from "../../components/Loader";
 
 const Table = () => {
   const { gameState } = useBaseContext();
-
+  const { players } = gameState;
   return (
     <div className={styles.table}>
       {gameState ? (
@@ -20,22 +20,22 @@ const Table = () => {
           </div>
           <div className={styles.players}>
             <div className={styles.player}>
-              <Player {...gameState?.players[0]} />
+              <Player {...players[0]} />
             </div>
             <div className={styles.player}>
-              <Player {...gameState?.players[1]} />
+              <Player {...players[1]} />
             </div>
             <div className={styles.player}>
-              <Player {...gameState?.players[2]} />
+              <Player {...players[2]} />
             </div>
             <div className={styles.player}>
-              <Player {...gameState?.players[3]} />
+              <Player {...players[3]} />
             </div>
             <div className={styles.player}>
-              <Player {...gameState?.players[4]} />
+              <Player {...players[4]} />
             </div>
             <div className={styles.player}>
-              <Player {...gameState?.players[5]} />
+              <Player {...players[5]} />
             </div>
           </div>
         </>

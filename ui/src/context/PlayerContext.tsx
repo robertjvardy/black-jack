@@ -28,8 +28,9 @@ export const usePlayerControlsContext = () => {
 const PlayerControlsProvider = ({
   children,
   seatKey,
-}: // TODO add gameState,
-{
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  gameState,
+}: {
   children: ReactNode;
   seatKey: string;
   gameState: GameStateType;
@@ -64,7 +65,15 @@ const PlayerControlsProvider = ({
     }
   }, [socket]);
 
-  const actions = {};
+  const handlePlaceBet = (betAmount: number) => {
+    socket?.emit("place-bet", { betAmount });
+  };
+
+  const handlePlayerReady = () => {
+    socket?.emit("player-ready");
+  };
+
+  const actions = { placeBet: handlePlaceBet, readyUp: handlePlayerReady };
 
   return socket ? (
     <PlayerControlsContext.Provider value={{ socket, actions }}>

@@ -4,6 +4,7 @@ import { Server } from "socket.io";
 import cors from "cors";
 import Game from "./gameStructure/game";
 import { playerAuthMiddleware } from "./middlewares";
+import { PlayerIndexType } from "./shared/types";
 
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || "0.0.0.0";
@@ -73,17 +74,24 @@ const playerNamespace = io.of("/player");
 playerNamespace.use(playerAuthMiddleware(game));
 
 playerNamespace.on("connection", (socket) => {
-  console.log(`Authenticated client connected: ${socket.id}`);
+  const token = socket.handshake.auth.token;
+  const seatIndex = game.validateSeatKey(token) as PlayerIndexType;
 
-  if (game.isHandInProgress()) {
-    socket.emit("pending-next-hand");
-  } else {
-    game.startHand();
-    io.emit("pending-bets");
-  }
+  console.log(`Authenticated client connected: ${socket.id}`);
+  io.emit("update", game.fetchGameState());
 
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
+  });
+
+  socket.on("place-bet", (data) => {
+    game.onPlayerBet(seatIndex, data.betAmount);
+    io.emit("update", game.fetchGameState());
+  });
+
+  socket.on("player-ready", () => {
+    game.onPlayerReady(seatIndex);
+    io.emit("update", game.fetchGameState());
   });
 });
 
