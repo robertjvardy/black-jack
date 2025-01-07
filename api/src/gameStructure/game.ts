@@ -89,6 +89,11 @@ class Game {
     hand.addPlayer(index);
   }
 
+  onCancelBet(index: PlayerIndexType) {
+    const player = this.gameState.players[index];
+    player.cancelBet();
+  }
+
   onPlayerReady(index: PlayerIndexType) {
     const player = this.gameState.players[index];
     player.readyUp();

@@ -89,6 +89,11 @@ playerNamespace.on("connection", (socket) => {
     io.emit("update", game.fetchGameState());
   });
 
+  socket.on("cancel-bet", () => {
+    game.onCancelBet(seatIndex);
+    io.emit("update", game.fetchGameState());
+  });
+
   socket.on("player-ready", () => {
     game.onPlayerReady(seatIndex);
     io.emit("update", game.fetchGameState());

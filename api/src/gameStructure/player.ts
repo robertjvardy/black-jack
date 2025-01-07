@@ -54,6 +54,15 @@ class Player {
     }
   }
 
+  cancelBet() {
+    if (this.currentBet) {
+      this.holdings = this.holdings + this.currentBet;
+      this.currentBet = 0;
+    } else {
+      // TODO throw error
+    }
+  }
+
   readyUp() {
     if (this.#seatKey && this.validateSeatKey(this.#seatKey)) {
       this.ready = true;

@@ -7,13 +7,39 @@
   font-size: 3rem;
 
   .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     background-color: gold;
     color: #006400;
     font-weight: 600;
     font-size: 1.5rem;
+    height: 30%;
 
-    .player-label {
-      font-size: 1rem;
+    .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 60%;
+      .player-label {
+        text-align: center;
+        font-size: 1rem;
+      }
+      div {
+        margin-left: 1rem;
+        margin-right: auto;
+      }
+    }
+    .bet {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40%;
+    }
+
+    .empty-seat {
+      margin: auto;
     }
   }
 

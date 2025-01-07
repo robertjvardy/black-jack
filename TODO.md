@@ -26,9 +26,13 @@
 
 1. Game is Started
 2. Player Joins seat
-3. First player places a bet
-4. Count down starts for other players
-5. Count Down ends and the hand inProgress state is set to true
+3. Player places bet
+   - TODO change bet UI on the table to render the chip the player bet instead of
+   - TODO add func for player to cancel bet
+4. player readies up
+   - TODO add func for the Table UI to show that player has readied up
+   - TODO add func for player to make changes
+5. once each present player readies up, hand inProgress state is set to true
 6. Cards are delt
 
 ## Implement Game Logic

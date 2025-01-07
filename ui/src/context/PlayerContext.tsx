@@ -69,11 +69,19 @@ const PlayerControlsProvider = ({
     socket?.emit("place-bet", { betAmount });
   };
 
+  const handlePlayerCancel = () => {
+    socket?.emit("cancel-bet");
+  };
+
   const handlePlayerReady = () => {
     socket?.emit("player-ready");
   };
 
-  const actions = { placeBet: handlePlaceBet, readyUp: handlePlayerReady };
+  const actions = {
+    placeBet: handlePlaceBet,
+    cancelBet: handlePlayerCancel,
+    readyUp: handlePlayerReady,
+  };
 
   return socket ? (
     <PlayerControlsContext.Provider value={{ socket, actions }}>
