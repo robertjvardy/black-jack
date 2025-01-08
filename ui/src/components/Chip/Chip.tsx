@@ -14,8 +14,8 @@ const Chip = ({
   size?: number;
   isClickable?: boolean;
 }) => {
-  const sizeCssProperty = `${size}em`;
-  const fontSizeCssProperty = `${size * 0.5}em`;
+  const sizeCssProperty = `${size * 16}px`;
+  const fontSizeCssProperty = `${size * 7}px`;
   return (
     <div
       className={styles["chip-container"]}
@@ -34,14 +34,10 @@ const Chip = ({
             background: color,
             height: sizeCssProperty,
             width: sizeCssProperty,
+            fontSize: fontSizeCssProperty,
           }}
         >
-          <div
-            className={styles["text-container"]}
-            style={{ fontSize: fontSizeCssProperty }}
-          >
-            {value}
-          </div>
+          {value}
         </div>
       </div>
     </div>

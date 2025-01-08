@@ -1,5 +1,9 @@
 # TODO
 
+## UI quality tasks
+
+- make the table ui more dynamic
+
 ## General
 
 - create parent build and write readme

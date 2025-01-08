@@ -41,7 +41,7 @@ const Player = ({
                       key={chip.value}
                       value={chip.value}
                       color={chip.color}
-                      size={1}
+                      size={3}
                     />
                   </div>
                 )
