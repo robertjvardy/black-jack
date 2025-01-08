@@ -96,6 +96,9 @@ playerNamespace.on("connection", (socket) => {
 
   socket.on("player-ready", () => {
     game.onPlayerReady(seatIndex);
+    if (game.checkPlayerReadyStatus()) {
+      game.startHand();
+    }
     io.emit("update", game.fetchGameState());
   });
 });

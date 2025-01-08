@@ -3,6 +3,10 @@ import { useBaseContext } from "../../../context/BaseContext";
 import { BET_OPTION_MAP, HAND_STATUS_MAP } from "../../../shared/constants";
 import Chip from "../../../components/Chip";
 
+const Hand = ({ active }: { active: boolean }) => {
+  return active ? <div>Cards</div> : null;
+};
+
 const Player = ({
   index,
   present,
@@ -24,7 +28,9 @@ const Player = ({
   const readyText = ready && "Ready!";
   return (
     <div className={styles.container}>
-      <div className={styles.content}>{isPendingBet ? readyText : "cards"}</div>
+      <div className={styles.content}>
+        {isPendingBet ? readyText : <Hand active={present && !!currentBet} />}
+      </div>
       <div className={styles.footer}>
         {present ? (
           <>

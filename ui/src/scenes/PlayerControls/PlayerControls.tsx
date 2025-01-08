@@ -5,7 +5,9 @@ import PlayerControlsProvider from "../../context/PlayerContext";
 import invariant from "tiny-invariant";
 import { fetchSeatIndex, fetchSeatKey } from "../../context/localStorageUtils";
 import { HAND_STATUS_MAP } from "../../shared/constants";
-import InitialBet from "./InitalBet";
+import InitialBet from "./components/InitalBet";
+import { PlayerIndexType } from "../../shared/types";
+import InProgressActions from "./components/InProgressActions";
 
 const PlayerControls = ({
   seatIndex,
@@ -25,15 +27,22 @@ const PlayerControls = ({
   const index = parseInt(seatIndex);
   const seatIndexDisplay = index + 1;
   const handInProgress = currentHand.status !== HAND_STATUS_MAP.pendingBets;
+  const isIncludedInCurrentHand = currentHand.players.includes(
+    parseInt(seatIndex) as PlayerIndexType
+  );
   const { currentBet, ready } = players[index];
 
   return (
     <div className={styles.content}>
       <h1>Player {seatIndexDisplay}</h1>
-      {handInProgress && <div>Hand in progress.</div>}
-      {!handInProgress && (
-        <InitialBet currentBet={currentBet} isReady={ready} />
-      )}
+      <div className={styles.controls}>
+        {handInProgress && (
+          <InProgressActions active={isIncludedInCurrentHand} />
+        )}
+        {!handInProgress && (
+          <InitialBet currentBet={currentBet} isReady={ready} />
+        )}
+      </div>
       <div className={styles.footer}>
         <button
           className={styles["leave-btn"]}

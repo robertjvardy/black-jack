@@ -2,6 +2,7 @@
 
 ## UI quality tasks
 
+- make player controls UI dynamic for mobile
 - add modal with fullscreen instructions (press f11 on windows and linux, Press ⌘ + Ctrl + f on mac)
 
 ## General
@@ -32,10 +33,16 @@
 2. Player Joins seat
 3. Player places bet
 4. player readies up
-   - TODO add func for the Table UI to show that player has readied up
-   - TODO add func for player to make changes
 5. once each present player readies up, hand inProgress state is set to true
 6. Cards are delt
+
+Continuously available actions
+
+- leave game
+  - implement functionality for when a player leaves a game
+  - clear player state
+  - prompt for warning
+  - clear local storage on the users device
 
 ## Implement Game Logic
 

@@ -1,7 +1,7 @@
-import { usePlayerControlsContext } from "../../context/PlayerContext";
-import { BET_OPTION_MAP } from "../../shared/constants";
-import Chip from "../../components/Chip";
-import styles from "./styles.module.scss";
+import { usePlayerControlsContext } from "../../../context/PlayerContext";
+import { BET_OPTION_MAP } from "../../../shared/constants";
+import Chip from "../../../components/Chip";
+import styles from "./initialBets.module.scss";
 
 const InitialBet = ({
   currentBet,

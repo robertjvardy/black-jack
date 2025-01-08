@@ -94,9 +94,18 @@ class Game {
     player.cancelBet();
   }
 
+  checkPlayerReadyStatus() {
+    const { players } = this.gameState;
+    return players.every((player) => !player.present || player.ready);
+  }
+
   onPlayerReady(index: PlayerIndexType) {
     const player = this.gameState.players[index];
     player.readyUp();
+  }
+
+  startHand() {
+    this.gameState.currentHand.startHand();
   }
 }
 

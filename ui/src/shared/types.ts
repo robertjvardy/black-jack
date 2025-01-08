@@ -1,6 +1,6 @@
 import { HAND_STATUS_MAP } from "./constants";
 
-export type PlayerIndiciesType = 0 | 1 | 2 | 3 | 4 | 5;
+export type PlayerIndexType = 0 | 1 | 2 | 3 | 4 | 5;
 
 export type PlayerType = {
   index: number;
@@ -17,7 +17,7 @@ export type HandStatusValuesType =
 
 export type HandStateType = {
   status: HandStatusValuesType;
-  players: PlayerIndiciesType[];
+  players: PlayerIndexType[];
 };
 
 export type GameStateType = {

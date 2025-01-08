@@ -15,6 +15,10 @@ class Hand {
       this.players = [...this.players, playerIndex].sort();
     }
   }
+
+  startHand() {
+    this.status = HAND_STATUS_MAP.dealing;
+  }
 }
 
 export default Hand;
