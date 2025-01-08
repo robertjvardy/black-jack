@@ -21,8 +21,18 @@ const Join = () => {
     <div>
       <h2>Theres a game in progress!</h2>
       <div className={styles["btn-container"]}>
-        <button onClick={() => navigate("seatAssignment")}>Join Table</button>
-        <button onClick={() => navigate("/table")}>View the Table</button>
+        <button
+          className={styles["join-btn"]}
+          onClick={() => navigate("seatAssignment")}
+        >
+          Join Table
+        </button>
+        <button
+          className={styles["table-btn"]}
+          onClick={() => navigate("/table")}
+        >
+          View the Table
+        </button>
       </div>
     </div>
   );
@@ -34,7 +44,12 @@ const Start = () => {
     <div>
       <h2>You're the first one here!</h2>
 
-      <button onClick={() => actions.startGame()}>Start a Game</button>
+      <button
+        className={styles["start-btn"]}
+        onClick={() => actions.startGame()}
+      >
+        Start a Game
+      </button>
     </div>
   );
 };
@@ -48,7 +63,12 @@ const Landing = () => {
       <div className={styles.options}>
         {gameState.started && <Join />}
         {!gameState.started && <Start />}
-        <button onClick={() => resetLocalStorage()}>Reset Local Storage</button>
+        <button
+          className={styles["clear-btn"]}
+          onClick={() => resetLocalStorage()}
+        >
+          Reset Local Storage
+        </button>
       </div>
     </div>
   );

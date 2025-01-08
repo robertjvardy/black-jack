@@ -11,7 +11,25 @@
     justify-content: space-between;
   }
 
+  .start-btn {
+    background-color: greenyellow;
+    color: black;
+  }
+  .clear-btn {
+    background-color: red;
+  }
+
+  .join-btn {
+    background-color: greenyellow;
+    color: black;
+  }
+  .table-btn {
+    background-color: purple;
+    color: black;
+  }
+
   button {
     margin-top: 2rem;
+    color: white;
   }
 }
