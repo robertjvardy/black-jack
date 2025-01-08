@@ -2,7 +2,7 @@
 
 ## UI quality tasks
 
-- make the table ui more dynamic
+- add modal with fullscreen instructions (press f11 on windows and linux, Press ⌘ + Ctrl + f on mac)
 
 ## General
 
@@ -31,8 +31,6 @@
 1. Game is Started
 2. Player Joins seat
 3. Player places bet
-   - TODO change bet UI on the table to render the chip the player bet instead of
-   - TODO add func for player to cancel bet
 4. player readies up
    - TODO add func for the Table UI to show that player has readied up
    - TODO add func for player to make changes

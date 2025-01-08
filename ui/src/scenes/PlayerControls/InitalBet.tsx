@@ -18,7 +18,9 @@ const InitialBet = ({
     <div className={styles["inital-bet"]}>
       {currentBet ? (
         <>
-          <div className={styles.title}>Waiting for the hand to start...</div>
+          {isReady && (
+            <div className={styles.title}>Waiting for the hand to start...</div>
+          )}
           <div className={styles["control-content"]}>
             <div>Your bet:</div>
             <div className={styles.bet}>

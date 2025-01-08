@@ -8,22 +8,23 @@ const Player = ({
   present,
   holdings,
   currentBet,
+  ready,
 }: {
   index: number;
   present: boolean;
   holdings: number;
   currentBet?: number;
+  ready: boolean;
 }) => {
   const { gameState } = useBaseContext();
   const {
     currentHand: { status },
   } = gameState;
   const isPendingBet = status === HAND_STATUS_MAP.pendingBets;
+  const readyText = ready && "Ready!";
   return (
     <div className={styles.container}>
-      <div className={styles.content}>
-        {isPendingBet ? "test" : "cards here"}
-      </div>
+      <div className={styles.content}>{isPendingBet ? readyText : "cards"}</div>
       <div className={styles.footer}>
         {present ? (
           <>
@@ -34,17 +35,21 @@ const Player = ({
               <div>{holdings}</div>
             </div>
             <div className={styles.bet}>
-              {BET_OPTION_MAP.filter((chip) => chip.value === currentBet).map(
-                (chip) => (
-                  <div>
-                    <Chip
-                      key={chip.value}
-                      value={chip.value}
-                      color={chip.color}
-                      size={3}
-                    />
-                  </div>
+              {currentBet ? (
+                BET_OPTION_MAP.filter((chip) => chip.value === currentBet).map(
+                  (chip) => (
+                    <div>
+                      <Chip
+                        key={chip.value}
+                        value={chip.value}
+                        color={chip.color}
+                        size={3}
+                      />
+                    </div>
+                  )
                 )
+              ) : (
+                <span>-</span>
               )}
             </div>
           </>

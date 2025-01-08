@@ -13,30 +13,17 @@ const Table = () => {
           <div className={styles.dealer}>
             <div className={styles.hand}>dealers hand</div>
             <div className={styles["game-info"]}>
-              <h1>BLACK JACK</h1>
-              <h5>Dealer must stand on all 17</h5>
               <div className={styles.ribbon}>2 to 1 INSURANCE 2 to 1</div>
+              <h1>BLACK JACK</h1>
+              <div className={styles.ribbon}>Dealer must stand on all 17</div>
             </div>
           </div>
           <div className={styles.players}>
-            <div className={styles.player}>
-              <Player {...players[0]} />
-            </div>
-            <div className={styles.player}>
-              <Player {...players[1]} />
-            </div>
-            <div className={styles.player}>
-              <Player {...players[2]} />
-            </div>
-            <div className={styles.player}>
-              <Player {...players[3]} />
-            </div>
-            <div className={styles.player}>
-              <Player {...players[4]} />
-            </div>
-            <div className={styles.player}>
-              <Player {...players[5]} />
-            </div>
+            {players.map((player) => (
+              <div className={styles.player}>
+                <Player {...player} />
+              </div>
+            ))}
           </div>
         </>
       ) : (
