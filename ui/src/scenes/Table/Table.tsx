@@ -2,18 +2,18 @@ import { useBaseContext } from "../../context/BaseContext";
 import styles from "./styles.module.scss";
 import Player from "./components/Player";
 import Loader from "../../components/Loader";
-import Dealer from "./components/Dealer";
+import Hand from "./components/Hand";
 
 const Table = () => {
   const { gameState } = useBaseContext();
-  const { players } = gameState;
+  const { players, dealer } = gameState;
   return (
     <div className={styles.table}>
       {gameState ? (
         <>
           <div className={styles.dealer}>
             <div className={styles.hand}>
-              <Dealer />
+              <Hand active cards={dealer.cards} />
             </div>
             <div className={styles["game-info"]}>
               <div className={styles.ribbon}>2 to 1 INSURANCE 2 to 1</div>

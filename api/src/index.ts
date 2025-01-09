@@ -98,6 +98,8 @@ playerNamespace.on("connection", (socket) => {
     game.onPlayerReady(seatIndex);
     if (game.checkPlayerReadyStatus()) {
       game.startRound();
+      // TODO move this out to a separate socket broadcast
+      game.dealCards();
     }
     io.emit("update", game.fetchGameState());
   });

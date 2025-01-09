@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import Card from "./card";
+import Hand from "./hand";
 
 export type PlayerType = typeof Player;
 
@@ -11,7 +12,7 @@ class Player {
   holdings: number = 0;
   currentBet?: number;
   options: any; // TODO create options for the players available actions
-  cards: Card[] = [];
+  hand: Hand = new Hand();
 
   constructor(index: number) {
     this.index = index;
@@ -74,7 +75,7 @@ class Player {
   }
 
   addCard(card: Card) {
-    this.cards = [...this.cards, card];
+    this.hand.addCard(card);
   }
 }
 

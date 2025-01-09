@@ -2,16 +2,18 @@ import { PlayerIndexType } from "../shared/types";
 import Round from "./round";
 import Player from "./player";
 import Shoe from "./shoe";
+import Hand from "./hand";
 
 export type GameStateType = {
   started: boolean;
+  dealer: Hand;
   players: Player[];
   currentRound: Round;
 };
 
 const defaultGameState = {
   started: false,
-  dealer: [],
+  dealer: new Hand(),
   players: [
     new Player(0),
     new Player(1),
@@ -108,10 +110,16 @@ class Game {
   }
 
   dealCards() {
-    const { currentRound, players } = this.gameState;
+    // TODO add socket broadcasts to update player UI on each card dealt
+    const { currentRound, players, dealer } = this.gameState;
     currentRound.players.forEach((playerIdx) => {
       players[playerIdx].addCard(this.shoe.pullCard());
     });
+    dealer.addCard(this.shoe.pullCard());
+    currentRound.players.forEach((playerIdx) => {
+      players[playerIdx].addCard(this.shoe.pullCard());
+    });
+    dealer.addCard(this.shoe.pullCard());
   }
 
   startRound() {

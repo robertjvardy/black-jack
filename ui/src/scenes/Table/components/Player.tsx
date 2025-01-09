@@ -2,10 +2,8 @@ import styles from "./player.module.scss";
 import { useBaseContext } from "../../../context/BaseContext";
 import { BET_OPTION_MAP, ROUND_STATUS_MAP } from "../../../shared/constants";
 import Chip from "../../../components/Chip";
-
-const Hand = ({ active }: { active: boolean }) => {
-  return active ? <div>Cards</div> : null;
-};
+import { HandType } from "../../../shared/types";
+import Hand from "./Hand";
 
 const Player = ({
   index,
@@ -13,12 +11,14 @@ const Player = ({
   holdings,
   currentBet,
   ready,
+  hand,
 }: {
   index: number;
   present: boolean;
   holdings: number;
   currentBet?: number;
   ready: boolean;
+  hand: HandType;
 }) => {
   const { gameState } = useBaseContext();
   const {
@@ -29,7 +29,11 @@ const Player = ({
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        {isPendingBet ? readyText : <Hand active={present && !!currentBet} />}
+        {isPendingBet ? (
+          readyText
+        ) : (
+          <Hand active={present && !!currentBet} cards={hand.cards} />
+        )}
       </div>
       <div className={styles.footer}>
         {present ? (
