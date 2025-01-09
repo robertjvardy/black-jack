@@ -2,7 +2,7 @@ import styles from "./inProgressActions.module.scss";
 
 const InActive = () => (
   <div className={styles["waiting-text"]}>
-    Waiting for the next hand to start.
+    Waiting for the next round to start.
     <div className={styles["sub-text"]}>
       Relax and watch your friends lose money
     </div>

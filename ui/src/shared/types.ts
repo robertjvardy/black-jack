@@ -1,4 +1,4 @@
-import { HAND_STATUS_MAP } from "./constants";
+import { ROUND_STATUS_MAP } from "./constants";
 
 export type PlayerIndexType = 0 | 1 | 2 | 3 | 4 | 5;
 
@@ -12,16 +12,16 @@ export type PlayerType = {
   ready: boolean;
 };
 
-export type HandStatusValuesType =
-  (typeof HAND_STATUS_MAP)[keyof typeof HAND_STATUS_MAP];
+export type RoundStatusValuesType =
+  (typeof ROUND_STATUS_MAP)[keyof typeof ROUND_STATUS_MAP];
 
-export type HandStateType = {
-  status: HandStatusValuesType;
+export type RoundStateType = {
+  status: RoundStatusValuesType;
   players: PlayerIndexType[];
 };
 
 export type GameStateType = {
   started: boolean;
   players: PlayerType[];
-  currentHand: HandStateType;
+  currentRound: RoundStateType;
 };

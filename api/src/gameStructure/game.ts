@@ -1,12 +1,12 @@
 import { PlayerIndexType } from "../shared/types";
-import Hand from "./hand";
+import Round from "./round";
 import Player from "./player";
 import Shoe from "./shoe";
 
 export type GameStateType = {
   started: boolean;
   players: Player[];
-  currentHand: Hand;
+  currentRound: Round;
 };
 
 const defaultGameState = {
@@ -20,7 +20,7 @@ const defaultGameState = {
     new Player(4),
     new Player(5),
   ],
-  currentHand: new Hand(),
+  currentRound: new Round(),
 };
 
 class Game {
@@ -77,19 +77,19 @@ class Game {
     return this.gameState.players.some((player) => player.present);
   }
 
-  isHandInProgress() {
-    return this.gameState.currentHand.isHandStarted();
+  isRoundInProgress() {
+    return this.gameState.currentRound.isRoundStarted();
   }
 
-  fetchHandState() {
-    return this.gameState.currentHand;
+  fetchRoundState() {
+    return this.gameState.currentRound;
   }
 
   onPlayerBet(index: PlayerIndexType, betAmount: number) {
     const player = this.gameState.players[index];
     player.placeBet(betAmount);
-    const hand = this.gameState.currentHand;
-    hand.addPlayer(index);
+    const round = this.gameState.currentRound;
+    round.addPlayer(index);
   }
 
   onCancelBet(index: PlayerIndexType) {
@@ -108,14 +108,14 @@ class Game {
   }
 
   dealCards() {
-    const { currentHand, players } = this.gameState;
-    currentHand.players.forEach((playerIdx) => {
+    const { currentRound, players } = this.gameState;
+    currentRound.players.forEach((playerIdx) => {
       players[playerIdx].addCard(this.shoe.pullCard());
     });
   }
 
-  startHand() {
-    this.gameState.currentHand.startHand();
+  startRound() {
+    this.gameState.currentRound.startRound();
   }
 }
 

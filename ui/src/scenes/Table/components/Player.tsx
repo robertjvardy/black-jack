@@ -1,6 +1,6 @@
 import styles from "./player.module.scss";
 import { useBaseContext } from "../../../context/BaseContext";
-import { BET_OPTION_MAP, HAND_STATUS_MAP } from "../../../shared/constants";
+import { BET_OPTION_MAP, ROUND_STATUS_MAP } from "../../../shared/constants";
 import Chip from "../../../components/Chip";
 
 const Hand = ({ active }: { active: boolean }) => {
@@ -22,9 +22,9 @@ const Player = ({
 }) => {
   const { gameState } = useBaseContext();
   const {
-    currentHand: { status },
+    currentRound: { status },
   } = gameState;
-  const isPendingBet = status === HAND_STATUS_MAP.pendingBets;
+  const isPendingBet = status === ROUND_STATUS_MAP.pendingBets;
   const readyText = ready && "Ready!";
   return (
     <div className={styles.container}>

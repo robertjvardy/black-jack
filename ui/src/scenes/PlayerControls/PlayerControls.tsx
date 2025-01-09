@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 import PlayerControlsProvider from "../../context/PlayerContext";
 import invariant from "tiny-invariant";
 import { fetchSeatIndex, fetchSeatKey } from "../../context/localStorageUtils";
-import { HAND_STATUS_MAP } from "../../shared/constants";
+import { ROUND_STATUS_MAP } from "../../shared/constants";
 import InitialBet from "./components/InitalBet";
 import { PlayerIndexType } from "../../shared/types";
 import InProgressActions from "./components/InProgressActions";
@@ -20,14 +20,14 @@ const PlayerControls = ({
     gameState,
     actions: { leaveSeat },
   } = useBaseContext();
-  const { currentHand, players } = gameState;
+  const { currentRound, players } = gameState;
 
   invariant(seatKey, "Seat Key is missing in player controls");
   invariant(seatIndex, "Seat Index is missing in player controls");
   const index = parseInt(seatIndex);
   const seatIndexDisplay = index + 1;
-  const handInProgress = currentHand.status !== HAND_STATUS_MAP.pendingBets;
-  const isIncludedInCurrentHand = currentHand.players.includes(
+  const roundInProgress = currentRound.status !== ROUND_STATUS_MAP.pendingBets;
+  const isIncludedInCurrentRound = currentRound.players.includes(
     parseInt(seatIndex) as PlayerIndexType
   );
   const { currentBet, ready } = players[index];
@@ -36,10 +36,10 @@ const PlayerControls = ({
     <div className={styles.content}>
       <h1>Player {seatIndexDisplay}</h1>
       <div className={styles.controls}>
-        {handInProgress && (
-          <InProgressActions active={isIncludedInCurrentHand} />
+        {roundInProgress && (
+          <InProgressActions active={isIncludedInCurrentRound} />
         )}
-        {!handInProgress && (
+        {!roundInProgress && (
           <InitialBet currentBet={currentBet} isReady={ready} />
         )}
       </div>

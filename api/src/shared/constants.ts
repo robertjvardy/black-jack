@@ -1,6 +1,6 @@
 import { CardSuitType, CardOrderType } from "./types";
 
-export const HAND_STATUS_MAP = {
+export const ROUND_STATUS_MAP = {
   pendingBets: "PENDING_BETS",
   dealing: "DEALING",
   insuranceCheck: "INSURANCE_CHECK",

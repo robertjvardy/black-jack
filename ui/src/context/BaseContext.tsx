@@ -16,7 +16,7 @@ import {
   storeSeatIndex,
   storeSeatKey,
 } from "./localStorageUtils";
-import { API_ADDRESS, HAND_STATUS_MAP } from "../shared/constants";
+import { API_ADDRESS, ROUND_STATUS_MAP } from "../shared/constants";
 
 export type BaseContextType = {
   socket?: Socket;
@@ -28,7 +28,7 @@ export type BaseContextType = {
 const defaultGameState = {
   started: false,
   players: [],
-  currentHand: { status: HAND_STATUS_MAP.pendingBets, players: [] },
+  currentRound: { status: ROUND_STATUS_MAP.pendingBets, players: [] },
 };
 
 // TODO create types for this and export
