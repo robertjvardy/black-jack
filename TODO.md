@@ -1,33 +1,22 @@
 # TODO
 
-## UI quality tasks
+## UI tasks
 
-- make player controls UI dynamic for mobile
 - add modal with fullscreen instructions (press f11 on windows and linux, Press ⌘ + Ctrl + f on mac)
+- add UI components cards
 
-## General
+## API tasks
 
+- add updates betweens cards being dealt with a delay to simulate a real dealer
+
+## General tasks
+
+- move share types to an npm package to remove code duplication between UI and API packages
 - create parent build and write readme
 - add docker
 - investigate: helmet morgan
 
-## Styles
-
-- export screen width break point from styles/variables
-
-## Authentication
-
-- on seat assign create a jwt (currently implemented with uuid)
-- jwt is assigned to the player obj
-- jwt is then sent to the client
-- client stores it in local storage
-
-- implement the following:
-  - add the jwt to a header in all subsequent requests
-  - on the api, restrict calls based on presence of jwt for the seat
-  - be sure to clear the local storage and emit to the server to free up the seat if the user closes the browser
-
-## Implement Game Set Up
+## Game Set Up
 
 1. Game is Started
 2. Player Joins seat
@@ -44,7 +33,7 @@ Continuously available actions
   - prompt for warning
   - clear local storage on the users device
 
-## Implement Game Logic
+## Game Logic
 
 1. Insurance (dealers showing ace)
 
@@ -67,7 +56,9 @@ Continuously available actions
 
 Action is to player in set with highest index
 
-## Add Docker
+## Future TODO's
+
+### Add Docker
 
 ````
 
@@ -99,3 +90,15 @@ EXPOSE 8080
 # Run the server
 CMD ["npm", "start"]
 ````
+
+### Authentication
+
+- on seat assign create a jwt (currently implemented with uuid)
+- jwt is assigned to the player obj
+- jwt is then sent to the client
+- client stores it in local storage
+
+- implement the following:
+  - add the jwt to a header in all subsequent requests
+  - on the api, restrict calls based on presence of jwt for the seat
+  - be sure to clear the local storage and emit to the server to free up the seat if the user closes the browser
