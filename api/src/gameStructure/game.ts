@@ -1,6 +1,7 @@
 import { PlayerIndexType } from "../shared/types";
 import Hand from "./hand";
 import Player from "./player";
+import Shoe from "./shoe";
 
 export type GameStateType = {
   started: boolean;
@@ -10,6 +11,7 @@ export type GameStateType = {
 
 const defaultGameState = {
   started: false,
+  dealer: [],
   players: [
     new Player(0),
     new Player(1),
@@ -23,6 +25,7 @@ const defaultGameState = {
 
 class Game {
   private gameState: GameStateType = defaultGameState;
+  private shoe = new Shoe();
 
   startGame() {
     this.gameState.started = true;
@@ -102,6 +105,13 @@ class Game {
   onPlayerReady(index: PlayerIndexType) {
     const player = this.gameState.players[index];
     player.readyUp();
+  }
+
+  dealCards() {
+    const { currentHand, players } = this.gameState;
+    currentHand.players.forEach((playerIdx) => {
+      players[playerIdx].addCard(this.shoe.pullCard());
+    });
   }
 
   startHand() {

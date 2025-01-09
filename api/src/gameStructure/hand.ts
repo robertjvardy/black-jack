@@ -1,6 +1,7 @@
 import { HAND_STATUS_MAP } from "../shared/constants";
 import { HandStatusValuesType, PlayerIndexType } from "../shared/types";
 
+// TODO rename to round
 class Hand {
   status: HandStatusValuesType = HAND_STATUS_MAP.pendingBets;
   players: PlayerIndexType[] = [];
