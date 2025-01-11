@@ -1,27 +1,26 @@
 .table {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background-color: #006400;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
   .dealer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    height: 55%;
+    padding-top: 1rem;
     width: 80%;
 
     .hand {
       margin: 0 auto;
-      border: 1px solid #ccc;
       height: 35vh;
-      width: 15vw;
+      max-height: calc(300px - 3rem);
+      min-width: 20%;
       display: flex;
       justify-content: center;
       align-items: center;
+      border-radius: 5px;
     }
 
     .game-info {
@@ -38,11 +37,13 @@
   }
 
   .players {
+    padding-bottom: 1rem;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    height: 40%;
-    width: 95%;
-    margin: 0 auto;
+    height: 50%;
+    max-height: 300px;
+    width: 98%;
+    margin-top: auto;
     gap: 1rem;
   }
 }
