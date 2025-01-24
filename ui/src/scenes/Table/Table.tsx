@@ -14,7 +14,12 @@ const Table = () => {
           <div className={styles.dealer}>
             <div>Dealer: </div>
             <div className={styles.hand}>
-              <Hand active cards={dealer.cards} hideOverflow={false} />
+              <Hand
+                active
+                cards={dealer.cards}
+                hideOverflow={false}
+                hideFirst
+              />
             </div>
             <div className={styles["game-info"]}>
               <div className={styles.ribbon}>2 to 1 INSURANCE 2 to 1</div>

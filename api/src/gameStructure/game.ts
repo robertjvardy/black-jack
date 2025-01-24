@@ -110,7 +110,6 @@ class Game {
   }
 
   dealCards() {
-    // TODO add socket broadcasts to update player UI on each card dealt
     const { currentRound, players, dealer } = this.gameState;
     currentRound.players.forEach((playerIdx) => {
       players[playerIdx].addCard(this.shoe.pullCard());

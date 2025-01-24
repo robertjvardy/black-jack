@@ -26,9 +26,11 @@ const io = new Server(httpServer, {
 
 const game = new Game();
 
+const updateGameState = () => io.emit("update", game.fetchGameState());
+
 io.on("connection", (socket) => {
   console.log(`Connected ${socket.id}`);
-  socket.emit("update", game.fetchGameState());
+  updateGameState();
 
   socket.on("assign-player", (data) => {
     const playerIndex = data.index;
@@ -41,7 +43,7 @@ io.on("connection", (socket) => {
   socket.on("start-game", () => {
     game.startGame();
     io.emit("clear-local-storage");
-    io.emit("update", game.fetchGameState());
+    updateGameState();
   });
 
   socket.on("leave-seat", (data) => {
@@ -49,7 +51,7 @@ io.on("connection", (socket) => {
     const seatKey = data.seatKey;
     game.removePlayer({ seatIndex, seatKey });
     socket.emit("clear-local-storage");
-    io.emit("update", game.fetchGameState());
+    updateGameState();
   });
 
   socket.on("validate-seat-key", (data) => {
@@ -78,7 +80,7 @@ playerNamespace.on("connection", (socket) => {
   const seatIndex = game.validateSeatKey(token) as PlayerIndexType;
 
   console.log(`Authenticated client connected: ${socket.id}`);
-  io.emit("update", game.fetchGameState());
+  updateGameState();
 
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
@@ -86,22 +88,21 @@ playerNamespace.on("connection", (socket) => {
 
   socket.on("place-bet", (data) => {
     game.onPlayerBet(seatIndex, data.betAmount);
-    io.emit("update", game.fetchGameState());
+    updateGameState();
   });
 
   socket.on("cancel-bet", () => {
     game.onCancelBet(seatIndex);
-    io.emit("update", game.fetchGameState());
+    updateGameState();
   });
 
-  socket.on("player-ready", () => {
+  socket.on("player-ready", async () => {
     game.onPlayerReady(seatIndex);
     if (game.checkPlayerReadyStatus()) {
       game.startRound();
-      // TODO move this out to a separate socket broadcast
       game.dealCards();
     }
-    io.emit("update", game.fetchGameState());
+    updateGameState();
   });
 });
 
