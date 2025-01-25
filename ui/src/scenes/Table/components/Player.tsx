@@ -2,7 +2,7 @@ import styles from "./player.module.scss";
 import { useBaseContext } from "../../../context/BaseContext";
 import { BET_OPTION_MAP, ROUND_STATUS_MAP } from "../../../shared/constants";
 import Chip from "../../../components/Chip";
-import { HandType } from "../../../shared/types";
+import { CardsDealtType, HandType } from "../../../shared/types";
 import Hand from "./Hand";
 
 const Player = ({
@@ -12,6 +12,7 @@ const Player = ({
   currentBet,
   ready,
   hand,
+  cardsDealt,
 }: {
   index: number;
   present: boolean;
@@ -19,6 +20,7 @@ const Player = ({
   currentBet?: number;
   ready: boolean;
   hand: HandType;
+  cardsDealt: CardsDealtType;
 }) => {
   const { gameState } = useBaseContext();
   const {
@@ -32,7 +34,11 @@ const Player = ({
         {isPendingBet ? (
           <div className={styles["ready-text"]}>{readyText}</div>
         ) : (
-          <Hand active={present && !!currentBet} cards={hand.cards} />
+          <Hand
+            active={present && !!currentBet}
+            cards={hand.cards}
+            cardsDealt={cardsDealt}
+          />
         )}
       </div>
       <div className={styles.footer}>
@@ -48,7 +54,7 @@ const Player = ({
               {currentBet ? (
                 BET_OPTION_MAP.filter((chip) => chip.value === currentBet).map(
                   (chip) => (
-                    <div>
+                    <div key={chip.value}>
                       <Chip
                         key={chip.value}
                         value={chip.value}

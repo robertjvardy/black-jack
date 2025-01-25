@@ -36,3 +36,6 @@ export const CARD_ORDERS: CardOrderType[] = [
   "Q",
   "K",
 ];
+
+export const InitialDeal = "Initial";
+export const dealerCardsDealtIndex = 6;

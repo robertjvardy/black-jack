@@ -101,6 +101,7 @@ playerNamespace.on("connection", (socket) => {
     if (game.checkPlayerReadyStatus()) {
       game.startRound();
       game.dealCards();
+      io.emit("initial-deal");
     }
     updateGameState();
   });

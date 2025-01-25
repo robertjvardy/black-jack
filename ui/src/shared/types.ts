@@ -1,4 +1,4 @@
-import { ROUND_STATUS_MAP } from "./constants";
+import { InitialDeal, ROUND_STATUS_MAP } from "./constants";
 
 export type PlayerIndexType = 0 | 1 | 2 | 3 | 4 | 5;
 export type CardSuitType = "C" | "D" | "H" | "S";
@@ -22,7 +22,7 @@ export type CardType = { order: CardOrderType; suit: CardSuitType };
 export type HandType = { cards: CardType[] };
 
 export type PlayerType = {
-  index: number;
+  index: PlayerIndexType;
   present: boolean;
   holdings: number;
   currentBet?: number;
@@ -46,3 +46,7 @@ export type GameStateType = {
   players: PlayerType[];
   currentRound: RoundStateType;
 };
+
+export type DealingToType = PlayerIndexType | typeof InitialDeal | null;
+export type CardsDealtType = 0 | 1 | 2;
+export type CardsDealtIndexType = PlayerIndexType | 6;

@@ -2,6 +2,7 @@ import { CardOrderType, CardSuitType } from "../../shared/types";
 import styles from "./styles.module.scss";
 import HiddenCard from "./CardImages/b.svg";
 import { fetchCardSvg } from "./CardImages/utils";
+import { motion } from "framer-motion";
 
 const Card = ({
   order,
@@ -15,11 +16,30 @@ const Card = ({
   index?: number;
 }) => {
   const leftOffset = `${5 + index * 30}px`;
+
+  if (!suit || !order) {
+    return null;
+  }
+
   return (
     <div className={styles.card} style={{ left: leftOffset }}>
-      <img
+      <motion.img
         src={hidden ? HiddenCard : fetchCardSvg(order, suit)}
         alt={hidden ? "Hidden Card" : `${order}${suit}`}
+        initial={{
+          x: "100vw", // Start from the right outside the viewport
+          y: "-100vh", // Start from the top outside the viewport
+        }}
+        animate={{
+          x: 0, // Move to the rendered component's position
+          y: 0,
+        }}
+        transition={{
+          type: "spring", // Smooth spring-like motion
+          stiffness: 100, // Adjust stiffness for bounce effect
+          damping: 20, // Adjust damping to control the smoothness
+        }}
+        className="w-32 h-32 rounded-lg shadow-lg"
       />
     </div>
   );

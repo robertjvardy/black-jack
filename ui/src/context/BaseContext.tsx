@@ -7,7 +7,13 @@ import {
   useState,
 } from "react";
 import io, { Socket } from "socket.io-client";
-import { GameStateType, PlayerType } from "../shared/types";
+import {
+  CardsDealtIndexType,
+  CardsDealtType,
+  DealingToType,
+  GameStateType,
+  PlayerType,
+} from "../shared/types";
 import { useNavigate } from "react-router";
 import {
   fetchSeatIndex,
@@ -16,14 +22,22 @@ import {
   storeSeatIndex,
   storeSeatKey,
 } from "./localStorageUtils";
-import { API_ADDRESS, ROUND_STATUS_MAP } from "../shared/constants";
+import {
+  API_ADDRESS,
+  InitialDeal,
+  ROUND_STATUS_MAP,
+} from "../shared/constants";
 
 export type BaseContextType = {
   socket?: Socket;
   gameState: GameStateType;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actions: Record<string, any>;
+  dealingTo: DealingToType;
+  cardsDealt: CardsDealtType[];
 };
+
+const defaultCardsDealt: CardsDealtType[] = [0, 0, 0, 0, 0, 0, 0];
 
 const defaultGameState = {
   started: false,
@@ -41,6 +55,8 @@ const defaultActions = {
 const BaseContext = createContext<BaseContextType>({
   gameState: defaultGameState,
   actions: defaultActions,
+  dealingTo: null,
+  cardsDealt: defaultCardsDealt,
 });
 
 export const useBaseContext = () => {
@@ -50,6 +66,9 @@ export const useBaseContext = () => {
 const BaseProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket>();
   const [gameState, setGameState] = useState<GameStateType>(defaultGameState);
+  const [dealingTo, setDealingTo] = useState<DealingToType>(InitialDeal);
+  const [cardsDealt, setCardsDealt] =
+    useState<CardsDealtType[]>(defaultCardsDealt);
 
   const navigate = useNavigate();
 
@@ -83,6 +102,11 @@ const BaseProvider = ({ children }: { children: ReactNode }) => {
       storeSeatIndex(index);
     };
 
+    const updateInitialDeal = () => {
+      console.log("Initial Deal");
+      setDealingTo(InitialDeal);
+    };
+
     const handleSeatKeyDenied = () => {
       console.log("Seat Key Denied");
       navigate("/home/seatAssignment");
@@ -111,11 +135,66 @@ const BaseProvider = ({ children }: { children: ReactNode }) => {
       });
       socket.on("player-update", updatePlayerState);
       socket.on("update", updateGameState);
+      socket.on("initial-deal", updateInitialDeal);
       socket.on("seat-key-validated", updateSeatKey);
       socket.on("seat-key-denied", handleSeatKeyDenied);
       socket.on("clear-local-storage", handleClearLocalStorage);
     }
   }, [socket, navigate]);
+
+  useEffect(() => {
+    console.log(cardsDealt);
+  }, [cardsDealt]);
+
+  useEffect(() => {
+    const participatingPlayers = gameState.players.filter((player) =>
+      gameState.currentRound.players.includes(player.index)
+    );
+    const updateCardsDealt = (
+      index: CardsDealtIndexType,
+      newCardsDealt: CardsDealtType
+    ) => {
+      const updatedCardsDealt = cardsDealt;
+      updatedCardsDealt[index] = newCardsDealt;
+      setCardsDealt(updatedCardsDealt);
+      console.log(index, updatedCardsDealt);
+    };
+
+    if (dealingTo === InitialDeal) {
+      console.log("dealing..........................");
+      // Deal first card to players
+      participatingPlayers.forEach((player, index) => {
+        setTimeout(() => {
+          updateCardsDealt(player.index, 1);
+        }, index * 1000);
+      });
+      // Deal to the Dealer
+      setTimeout(() => {
+        updateCardsDealt(6, 1);
+      }, (participatingPlayers.length + 1) * 1000);
+      // Deal second card to players
+      participatingPlayers.forEach((player, index) => {
+        setTimeout(() => {
+          updateCardsDealt(player.index, 2);
+        }, (participatingPlayers.length + 1 + index) * 1000);
+      });
+      // Deal second card to the Dealer
+      setTimeout(() => {
+        updateCardsDealt(6, 2);
+      }, (participatingPlayers.length * 2 + 2) * 1000);
+      // End the initial deal state
+      handleUpdateDealingTo(null);
+    }
+  }, [
+    cardsDealt,
+    dealingTo,
+    gameState.currentRound.players,
+    gameState.players,
+  ]);
+
+  const handleUpdateDealingTo = (dealingToIndex: DealingToType) => {
+    setDealingTo(dealingToIndex);
+  };
 
   const handleStartGame = useCallback(() => {
     socket?.emit("start-game");
@@ -157,10 +236,13 @@ const BaseProvider = ({ children }: { children: ReactNode }) => {
     validateSeatKey: handleValidateSeatKey,
     verifyUserUnassigned: handleVerifyUserUnassigned,
     leaveSeat: handleLeaveSeat,
+    updateDealingTo: handleUpdateDealingTo,
   };
 
   return socket ? (
-    <BaseContext.Provider value={{ socket, gameState, actions }}>
+    <BaseContext.Provider
+      value={{ socket, gameState, actions, dealingTo, cardsDealt: cardsDealt }}
+    >
       {children}
     </BaseContext.Provider>
   ) : null;
