@@ -6,7 +6,7 @@ const Hand = ({
   active,
   cards,
   hideFirst = false,
-  hideOverflow = true,
+  hideOverflow = false,
 }: {
   active: boolean;
   cards: CardType[];

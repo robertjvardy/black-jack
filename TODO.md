@@ -3,11 +3,9 @@
 ## UI tasks
 
 - add modal with fullscreen instructions (press f11 on windows and linux, Press ⌘ + Ctrl + f on mac)
-- add UI components cards
+- add UI transitions for cards
 
 ## API tasks
-
-- add updates betweens cards being dealt with a delay to simulate a real dealer
 
 ## General tasks
 

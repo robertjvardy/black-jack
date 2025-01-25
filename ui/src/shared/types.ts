@@ -1,4 +1,4 @@
-import { ROUND_STATUS_MAP } from "./constants";
+import { ROUND_STATUS_MAP, InitialDeal } from "./constants";
 
 export type PlayerIndexType = 0 | 1 | 2 | 3 | 4 | 5;
 export type CardSuitType = "C" | "D" | "H" | "S";
@@ -16,6 +16,8 @@ export type CardOrderType =
   | "J"
   | "Q"
   | "K";
+
+export type DealingToType = PlayerIndexType | typeof InitialDeal | null;
 
 export type CardType = { order: CardOrderType; suit: CardSuitType };
 

@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import io, { Socket } from "socket.io-client";
-import { GameStateType, PlayerType } from "../shared/types";
+import { DealingToType, GameStateType, PlayerType } from "../shared/types";
 import { useNavigate } from "react-router";
 import {
   fetchSeatIndex,
@@ -16,13 +16,18 @@ import {
   storeSeatIndex,
   storeSeatKey,
 } from "./localStorageUtils";
-import { API_ADDRESS, ROUND_STATUS_MAP } from "../shared/constants";
+import {
+  API_ADDRESS,
+  InitialDeal,
+  ROUND_STATUS_MAP,
+} from "../shared/constants";
 
 export type BaseContextType = {
   socket?: Socket;
   gameState: GameStateType;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actions: Record<string, any>;
+  dealingTo: DealingToType;
 };
 
 const defaultGameState = {
@@ -41,6 +46,7 @@ const defaultActions = {
 const BaseContext = createContext<BaseContextType>({
   gameState: defaultGameState,
   actions: defaultActions,
+  dealingTo: null,
 });
 
 export const useBaseContext = () => {
@@ -50,6 +56,7 @@ export const useBaseContext = () => {
 const BaseProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket>();
   const [gameState, setGameState] = useState<GameStateType>(defaultGameState);
+  const [dealingTo, setDealingTo] = useState<DealingToType>(null);
 
   const navigate = useNavigate();
 
@@ -76,6 +83,11 @@ const BaseProvider = ({ children }: { children: ReactNode }) => {
     const updateGameState = (state: GameStateType) => {
       console.log("Game State: ", state);
       setGameState(state);
+    };
+
+    const updateInitialDeal = () => {
+      console.log("Initial Deal");
+      setDealingTo(InitialDeal);
     };
 
     const updateSeatKey = ({ index }: { index: number }) => {
@@ -111,6 +123,7 @@ const BaseProvider = ({ children }: { children: ReactNode }) => {
       });
       socket.on("player-update", updatePlayerState);
       socket.on("update", updateGameState);
+      socket.on("initial-deal", updateInitialDeal);
       socket.on("seat-key-validated", updateSeatKey);
       socket.on("seat-key-denied", handleSeatKeyDenied);
       socket.on("clear-local-storage", handleClearLocalStorage);
@@ -151,16 +164,21 @@ const BaseProvider = ({ children }: { children: ReactNode }) => {
     [socket, navigate]
   );
 
+  const handleUpdateDealingTo = (dealingToIndex: DealingToType) => {
+    setDealingTo(dealingToIndex);
+  };
+
   const actions = {
     startGame: handleStartGame,
     assignPlayer: handleAssignPlayer,
     validateSeatKey: handleValidateSeatKey,
     verifyUserUnassigned: handleVerifyUserUnassigned,
     leaveSeat: handleLeaveSeat,
+    updateDealingTo: handleUpdateDealingTo,
   };
 
   return socket ? (
-    <BaseContext.Provider value={{ socket, gameState, actions }}>
+    <BaseContext.Provider value={{ socket, gameState, actions, dealingTo }}>
       {children}
     </BaseContext.Provider>
   ) : null;
