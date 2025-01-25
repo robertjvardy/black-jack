@@ -19,6 +19,10 @@ class Round {
   startRound() {
     this.status = ROUND_STATUS_MAP.dealing;
   }
+
+  checkForInsuranceEligibility() {
+    this.status = ROUND_STATUS_MAP.insuranceCheck;
+  }
 }
 
 export default Round;

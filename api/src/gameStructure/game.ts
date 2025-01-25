@@ -3,6 +3,7 @@ import Round from "./round";
 import Player from "./player";
 import Shoe from "./shoe";
 import Hand from "./hand";
+import { updateGameState } from "..";
 
 export type GameStateType = {
   started: boolean;
@@ -111,18 +112,42 @@ class Game {
 
   dealCards() {
     const { currentRound, players, dealer } = this.gameState;
-    currentRound.players.forEach((playerIdx) => {
-      players[playerIdx].addCard(this.shoe.pullCard());
+    const participatingPlayers = currentRound.players.reverse();
+    const positionsToDeal = participatingPlayers.length;
+    const delay = 1000;
+
+    participatingPlayers.forEach((playerIdx, index) => {
+      setTimeout(() => {
+        players[playerIdx].addCard(this.shoe.pullCard());
+        updateGameState();
+      }, index * delay);
     });
-    dealer.addCard(this.shoe.pullCard());
-    currentRound.players.forEach((playerIdx) => {
-      players[playerIdx].addCard(this.shoe.pullCard());
+
+    setTimeout(() => {
+      dealer.addCard(this.shoe.pullCard());
+      updateGameState();
+    }, positionsToDeal * delay);
+
+    participatingPlayers.forEach((playerIdx, index) => {
+      setTimeout(() => {
+        players[playerIdx].addCard(this.shoe.pullCard());
+        updateGameState();
+      }, (positionsToDeal + 1 + index) * delay);
     });
-    dealer.addCard(this.shoe.pullCard());
+
+    setTimeout(() => {
+      dealer.addCard(this.shoe.pullCard());
+      this.checkForInsuranceEligibility();
+      updateGameState();
+    }, (positionsToDeal * 2 + 1) * delay);
   }
 
   startRound() {
     this.gameState.currentRound.startRound();
+  }
+
+  checkForInsuranceEligibility() {
+    this.gameState.currentRound.checkForInsuranceEligibility();
   }
 }
 

@@ -12,6 +12,7 @@ const Player = ({
   currentBet,
   ready,
   hand,
+  hideOverflow,
 }: {
   index: number;
   present: boolean;
@@ -19,6 +20,7 @@ const Player = ({
   currentBet?: number;
   ready: boolean;
   hand: HandType;
+  hideOverflow: boolean;
 }) => {
   const { gameState } = useBaseContext();
   const {
@@ -32,7 +34,11 @@ const Player = ({
         {isPendingBet ? (
           <div className={styles["ready-text"]}>{readyText}</div>
         ) : (
-          <Hand active={present && !!currentBet} cards={hand.cards} />
+          <Hand
+            active={present && !!currentBet}
+            cards={hand.cards}
+            hideOverflow={hideOverflow}
+          />
         )}
       </div>
       <div className={styles.footer}>

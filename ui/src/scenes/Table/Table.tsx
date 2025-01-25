@@ -3,10 +3,13 @@ import styles from "./styles.module.scss";
 import Player from "./components/Player";
 import Loader from "../../components/Loader";
 import Hand from "./components/Hand";
+import { ROUND_STATUS_MAP } from "../../shared/constants";
 
 const Table = () => {
   const { gameState } = useBaseContext();
-  const { players, dealer } = gameState;
+  const { players, dealer, currentRound } = gameState;
+  const { status } = currentRound;
+  const isInitialDeal = status === ROUND_STATUS_MAP.dealing;
   return (
     <div className={styles.table}>
       {gameState ? (
@@ -29,8 +32,9 @@ const Table = () => {
           </div>
           <div className={styles.players}>
             {players.map((player) => (
-              <div className={styles.player}>
-                <Player {...player} />
+              <div className={styles.player} key={player.index}>
+                {/* hideOverflow will also need to handle individual dealing */}
+                <Player {...player} hideOverflow={!isInitialDeal} />
               </div>
             ))}
           </div>

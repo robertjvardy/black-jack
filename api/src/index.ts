@@ -26,7 +26,7 @@ const io = new Server(httpServer, {
 
 const game = new Game();
 
-const updateGameState = () => io.emit("update", game.fetchGameState());
+export const updateGameState = () => io.emit("update", game.fetchGameState());
 
 io.on("connection", (socket) => {
   console.log(`Connected ${socket.id}`);
@@ -100,6 +100,7 @@ playerNamespace.on("connection", (socket) => {
     game.onPlayerReady(seatIndex);
     if (game.checkPlayerReadyStatus()) {
       game.startRound();
+      updateGameState();
       game.dealCards();
     }
     updateGameState();

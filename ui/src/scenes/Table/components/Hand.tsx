@@ -21,6 +21,7 @@ const Hand = ({
       >
         {cards.map(({ order, suit }, index) => (
           <Card
+            key={index}
             order={order}
             suit={suit}
             index={index}
