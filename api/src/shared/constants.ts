@@ -4,6 +4,7 @@ export const ROUND_STATUS_MAP = {
   pendingBets: "PENDING_BETS",
   dealing: "DEALING",
   insuranceCheck: "INSURANCE_CHECK",
+  dealerBlackJackCheck: "DEALER_BLACKJACK_CHECK",
   playerAction: "PLAYER_ACTION",
   dealerAction: "DEALER_ACTION",
   payout: "PAYOUT",

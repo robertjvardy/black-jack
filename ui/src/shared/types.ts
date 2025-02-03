@@ -19,7 +19,7 @@ export type CardOrderType =
 
 export type CardType = { order: CardOrderType; suit: CardSuitType };
 
-export type HandType = { cards: CardType[] };
+export type HandType = { cards: CardType[]; total: number[] };
 
 export type PlayerType = {
   index: number;

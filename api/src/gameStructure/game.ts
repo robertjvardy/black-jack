@@ -147,7 +147,9 @@ class Game {
   }
 
   checkForInsuranceEligibility() {
-    this.gameState.currentRound.checkForInsuranceEligibility();
+    this.gameState.currentRound.checkForInsuranceEligibility(
+      this.gameState.dealer
+    );
   }
 }
 

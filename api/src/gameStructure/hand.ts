@@ -1,16 +1,14 @@
+import { calculateHandTotal } from "../shared/utils/cardUtils";
 import Card from "./card";
 
 class Hand {
   cards: Card[] = [];
+  total: number[] = [];
 
   addCard(card: Card) {
     this.cards = [...this.cards, card];
+    this.total = calculateHandTotal(this.cards);
   }
-
-  //   TODO implementfn to calculate the total of the cards in the hand
-  //   will likely need to map letters to numbers
-  //   hands with an ace will likely have to return two numbers
-  fetchTotal() {}
 }
 
 export default Hand;
