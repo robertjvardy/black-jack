@@ -10,6 +10,13 @@ export const ROUND_STATUS_MAP = {
   payout: "PAYOUT",
 } as const;
 
+export const PLAYER_HAND_RESULT_MAP = {
+  win: "WIN",
+  loss: "LOSS",
+  push: "PUSH",
+  blackJack: "BLACK_JACK",
+} as const;
+
 export const CARD_SUITS: CardSuitType[] = ["C", "D", "H", "S"];
 export const CARD_ORDERS: CardOrderType[] = [
   "A",

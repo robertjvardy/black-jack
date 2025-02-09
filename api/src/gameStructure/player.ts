@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import Card from "./card";
 import Hand from "./hand";
+import { PLAYER_HAND_RESULT_MAP } from "../shared/constants";
 
 export type PlayerType = typeof Player;
 
@@ -13,6 +14,7 @@ class Player {
   currentBet?: number;
   options: any; // TODO create options for the players available actions
   hand: Hand = new Hand();
+  splitHands: Hand[] = [];
   insuranceAccepted?: boolean;
 
   constructor(index: number) {
@@ -73,6 +75,29 @@ class Player {
     } else {
       // TODO throw error
     }
+  }
+
+  private settleHand(hand: Hand, dealerTotal: number) {
+    var payout = 0;
+    if (this.currentBet) {
+      switch (hand.evaluateHand(dealerTotal)) {
+        case PLAYER_HAND_RESULT_MAP.push:
+          payout = this.currentBet;
+        case PLAYER_HAND_RESULT_MAP.win:
+          payout = this.currentBet * 2;
+        case PLAYER_HAND_RESULT_MAP.blackJack:
+          payout = this.currentBet * 2.5;
+      }
+      this.holdings += payout;
+    } else {
+      // TODO throw error
+    }
+  }
+
+  settleAllHands(dealerTotal: number) {
+    this.settleHand(this.hand, dealerTotal);
+    this.splitHands.forEach((hand) => this.settleHand(hand, dealerTotal));
+    this.currentBet = 0;
   }
 
   addCard(card: Card) {
