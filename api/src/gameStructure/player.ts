@@ -11,7 +11,7 @@ class Player {
   present: boolean;
   ready: boolean = false;
   holdings: number = 0;
-  currentBet?: number;
+  currentBet: number = 0;
   options: any; // TODO create options for the players available actions
   hand: Hand = new Hand();
   splitHands: Hand[] = [];
@@ -39,7 +39,7 @@ class Player {
   remove() {
     this.present = false;
     this.holdings = 0;
-    this.currentBet = undefined;
+    this.currentBet = 0;
     this.#seatKey = undefined;
     this.ready = false;
   }
@@ -61,12 +61,9 @@ class Player {
   }
 
   cancelBet() {
-    if (this.currentBet) {
-      this.holdings = this.holdings + this.currentBet;
-      this.currentBet = 0;
-    } else {
-      // TODO throw error
-    }
+    this.verifyCurrentBet();
+    this.holdings = this.holdings + this.currentBet;
+    this.currentBet = 0;
   }
 
   readyUp() {
@@ -77,21 +74,26 @@ class Player {
     }
   }
 
+  reset() {
+    this.hand.reset();
+    this.splitHands = [];
+    this.insuranceAccepted = undefined;
+    this.ready = false;
+    this.currentBet = 0;
+  }
+
   private settleHand(hand: Hand, dealerTotal: number) {
     var payout = 0;
-    if (this.currentBet) {
-      switch (hand.evaluateHand(dealerTotal)) {
-        case PLAYER_HAND_RESULT_MAP.push:
-          payout = this.currentBet;
-        case PLAYER_HAND_RESULT_MAP.win:
-          payout = this.currentBet * 2;
-        case PLAYER_HAND_RESULT_MAP.blackJack:
-          payout = this.currentBet * 2.5;
-      }
-      this.holdings += payout;
-    } else {
-      // TODO throw error
+    this.verifyCurrentBet();
+    switch (hand.evaluateHand(dealerTotal)) {
+      case PLAYER_HAND_RESULT_MAP.push:
+        payout = this.currentBet;
+      case PLAYER_HAND_RESULT_MAP.win:
+        payout = this.currentBet * 2;
+      case PLAYER_HAND_RESULT_MAP.blackJack:
+        payout = this.currentBet * 2.5;
     }
+    this.holdings += payout;
   }
 
   settleAllHands(dealerTotal: number) {
@@ -100,16 +102,33 @@ class Player {
     this.currentBet = 0;
   }
 
+  settleInsurance(isDealerBlackJack: boolean) {
+    this.verifyCurrentBet();
+    if (this.insuranceAccepted && isDealerBlackJack) {
+      this.holdings += this.currentBet * 2;
+    }
+  }
+
   addCard(card: Card) {
     this.hand.addCard(card);
   }
 
-  insuranceSelection(value: boolean) {
-    this.insuranceAccepted = value;
+  insuranceSelection(selection: boolean) {
+    this.verifyCurrentBet();
+    this.insuranceAccepted = selection;
+    if (selection) {
+      this.holdings -= this.currentBet;
+    }
   }
 
   isInsuranceSelectionMade() {
     return this.insuranceAccepted !== undefined;
+  }
+
+  verifyCurrentBet() {
+    if (this.currentBet == 0) {
+      // TODO throw error
+    }
   }
 }
 

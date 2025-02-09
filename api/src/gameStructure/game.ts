@@ -5,6 +5,7 @@ import Shoe from "./shoe";
 import Hand from "./hand";
 import { updateGameState } from "..";
 import Card from "./card";
+import { ROUND_STATUS_MAP, TWENTY_ONE } from "../shared/constants";
 
 export type GameStateType = {
   started: boolean;
@@ -94,6 +95,12 @@ class Game {
     player.placeBet(betAmount);
     const round = this.gameState.currentRound;
     round.addPlayer(index);
+    if (this.checkPlayerReadyStatus()) {
+      this.startRound();
+      updateGameState();
+      this.dealCards();
+    }
+    updateGameState();
   }
 
   onCancelBet(index: PlayerIndexType) {
@@ -138,7 +145,8 @@ class Game {
     });
 
     setTimeout(() => {
-      dealer.addCard(this.shoe.pullCard());
+      dealer.addCard(new Card("10", "C"));
+      // dealer.addCard(this.shoe.pullCard());
       updateGameState();
     }, positionsToDeal * delay);
 
@@ -161,6 +169,12 @@ class Game {
     this.gameState.currentRound.startRound();
   }
 
+  resetRound() {
+    this.gameState.currentRound.restartRound();
+    this.gameState.dealer.reset();
+    this.gameState.players.forEach((player) => player.reset());
+  }
+
   checkForInsuranceEligibility() {
     this.gameState.currentRound.checkForInsuranceEligibility(
       this.gameState.dealer
@@ -169,23 +183,32 @@ class Game {
 
   insuranceSelection(index: number, value: boolean) {
     this.gameState.players[index].insuranceSelection(value);
-    const players = this.gameState.players.filter((player) => player.present);
-    if (players.every((player) => player.isInsuranceSelectionMade())) {
+    if (this.checkPlayerInsuranceStatus()) {
       this.evaluateInsurance();
     }
     updateGameState();
   }
 
   evaluateInsurance() {
-    // check for dealer 21
-    // if not 21
-    //    take payment from participating players
-    //    proceed to player hand actions
-    // if 21
-    //    pay out participating players
-    //    take bets from all players with < 21
-    //    push all players with 21
-    //    reset round status
+    const dealerBlackJack = this.gameState.dealer.isBlackJack();
+    const presentPlayers = this.gameState.players.filter(
+      (player) => player.present
+    );
+
+    if (dealerBlackJack) {
+      presentPlayers.forEach((player) => {
+        player.settleInsurance(dealerBlackJack);
+        player.settleAllHands(TWENTY_ONE);
+      });
+      // TODO transition to payout here
+      // TODO delay the round reset so the UI can show dealer card and payout
+      this.resetRound();
+    } else {
+      this.gameState.currentRound.setStatus(
+        ROUND_STATUS_MAP.dealerBlackJackCheck
+      );
+      updateGameState();
+    }
   }
 }
 

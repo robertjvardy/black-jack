@@ -1,5 +1,5 @@
 import Card from "../../gameStructure/card";
-import { CARD_ORDERS, CARD_SUITS } from "../constants";
+import { CARD_ORDERS, CARD_SUITS, TWENTY_ONE } from "../constants";
 import { CardOrderType } from "../types";
 
 export const compileDeck = (numberOfDecks = 5): Card[] => {
@@ -63,7 +63,7 @@ export const calculateHandTotal = (hand: Card[]) => {
     });
 
     const combinedTotal = acesTotal.map((value) => value + nonAceTotal);
-    if (combinedTotal[1] > 21) {
+    if (combinedTotal[1] > TWENTY_ONE) {
       return [combinedTotal[0]];
     }
     return combinedTotal;

@@ -17,6 +17,8 @@ export const PLAYER_HAND_RESULT_MAP = {
   blackJack: "BLACK_JACK",
 } as const;
 
+export const TWENTY_ONE = 21;
+
 export const CARD_SUITS: CardSuitType[] = ["C", "D", "H", "S"];
 export const CARD_ORDERS: CardOrderType[] = [
   "A",

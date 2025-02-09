@@ -1,4 +1,4 @@
-import { PLAYER_HAND_RESULT_MAP } from "../shared/constants";
+import { PLAYER_HAND_RESULT_MAP, TWENTY_ONE } from "../shared/constants";
 import { calculateHandTotal } from "../shared/utils/cardUtils";
 import Card from "./card";
 
@@ -11,18 +11,23 @@ class Hand {
     this.#total = calculateHandTotal(this.cards);
   }
 
+  reset() {
+    this.cards = [];
+    this.#total = [];
+  }
+
   getTotal() {
     return this.#total.pop();
   }
 
   isBusted() {
     const total = this.getTotal();
-    return total && total > 21;
+    return total && total > TWENTY_ONE;
   }
 
   isBlackJack() {
     const total = this.#total.pop();
-    return total && total == 21 && this.cards.length === 2;
+    return total && total == TWENTY_ONE && this.cards.length === 2;
   }
 
   evaluateHand(dealerTotal: number) {

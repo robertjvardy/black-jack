@@ -17,16 +17,27 @@ class Round {
     }
   }
 
+  setStatus(status: RoundStatusValuesType) {
+    console.log(`Setting status to: ${status}`);
+    this.status = status;
+  }
+
   startRound() {
-    this.status = ROUND_STATUS_MAP.dealing;
+    this.setStatus(ROUND_STATUS_MAP.dealing);
+  }
+
+  restartRound() {
+    this.setStatus(ROUND_STATUS_MAP.pendingBets);
+    this.pendingPlayer = undefined;
+    this.players = [];
   }
 
   checkForInsuranceEligibility(dealerHand: Hand) {
     const dealerShowingAce = dealerHand.cards[1].order === "A";
     if (dealerShowingAce) {
-      this.status = ROUND_STATUS_MAP.insuranceCheck;
+      this.setStatus(ROUND_STATUS_MAP.insuranceCheck);
     } else {
-      this.status = ROUND_STATUS_MAP.dealerBlackJackCheck;
+      this.setStatus(ROUND_STATUS_MAP.dealerBlackJackCheck);
     }
     return dealerShowingAce;
   }
