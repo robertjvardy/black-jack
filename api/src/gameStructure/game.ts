@@ -4,6 +4,7 @@ import Player from "./player";
 import Shoe from "./shoe";
 import Hand from "./hand";
 import { updateGameState } from "..";
+import Card from "./card";
 
 export type GameStateType = {
   started: boolean;
@@ -105,9 +106,22 @@ class Game {
     return players.every((player) => !player.present || player.ready);
   }
 
+  checkPlayerInsuranceStatus() {
+    const { players } = this.gameState;
+    return players.every(
+      (player) => !player.present || player.isInsuranceSelectionMade()
+    );
+  }
+
   onPlayerReady(index: PlayerIndexType) {
     const player = this.gameState.players[index];
     player.readyUp();
+    if (this.checkPlayerReadyStatus()) {
+      this.startRound();
+      updateGameState();
+      this.dealCards();
+    }
+    updateGameState();
   }
 
   dealCards() {
@@ -136,7 +150,8 @@ class Game {
     });
 
     setTimeout(() => {
-      dealer.addCard(this.shoe.pullCard());
+      dealer.addCard(new Card("A", "C"));
+      // dealer.addCard(this.shoe.pullCard());
       this.checkForInsuranceEligibility();
       updateGameState();
     }, (positionsToDeal * 2 + 1) * delay);
@@ -150,6 +165,27 @@ class Game {
     this.gameState.currentRound.checkForInsuranceEligibility(
       this.gameState.dealer
     );
+  }
+
+  insuranceSelection(index: number, value: boolean) {
+    this.gameState.players[index].insuranceSelection(value);
+    const players = this.gameState.players.filter((player) => player.present);
+    if (players.every((player) => player.isInsuranceSelectionMade())) {
+      this.evaluateInsurance();
+    }
+    updateGameState();
+  }
+
+  evaluateInsurance() {
+    // check for dealer 21
+    // if not 21
+    //    take payment from participating players
+    //    proceed to player hand actions
+    // if 21
+    //    pay out participating players
+    //    take bets from all players with < 21
+    //    push all players with 21
+    //    reset round status
   }
 }
 

@@ -30,6 +30,7 @@ export type PlayerType = {
   options: any;
   ready: boolean;
   hand: HandType;
+  insuranceAccepted?: boolean;
 };
 
 export type RoundStatusValuesType =

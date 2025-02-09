@@ -13,6 +13,7 @@ class Player {
   currentBet?: number;
   options: any; // TODO create options for the players available actions
   hand: Hand = new Hand();
+  insuranceAccepted?: boolean;
 
   constructor(index: number) {
     this.index = index;
@@ -76,6 +77,14 @@ class Player {
 
   addCard(card: Card) {
     this.hand.addCard(card);
+  }
+
+  insuranceSelection(value: boolean) {
+    this.insuranceAccepted = value;
+  }
+
+  isInsuranceSelectionMade() {
+    return this.insuranceAccepted !== undefined;
   }
 }
 

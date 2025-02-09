@@ -7,7 +7,7 @@ import { fetchSeatIndex, fetchSeatKey } from "../../context/localStorageUtils";
 import { ROUND_STATUS_MAP } from "../../shared/constants";
 import InitialBet from "./components/InitalBet";
 import { PlayerIndexType } from "../../shared/types";
-import InProgressActions from "./components/InProgressActions";
+import Actions from "./components/Actions";
 
 const PlayerControls = ({
   seatIndex,
@@ -37,7 +37,10 @@ const PlayerControls = ({
       <h1>Player {seatIndexDisplay}</h1>
       <div className={styles.controls}>
         {roundInProgress && (
-          <InProgressActions active={isIncludedInCurrentRound} />
+          <Actions
+            active={isIncludedInCurrentRound}
+            roundStatus={currentRound.status}
+          />
         )}
         {!roundInProgress && (
           <InitialBet currentBet={currentBet} isReady={ready} />

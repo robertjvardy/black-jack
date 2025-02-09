@@ -6,7 +6,7 @@ export const API_ADDRESS =
 export const ROUND_STATUS_MAP = {
   pendingBets: "PENDING_BETS",
   dealing: "DEALING",
-  insuranceCheck: "INSUREANCE_CHECK",
+  insuranceCheck: "INSURANCE_CHECK",
   playerAction: "PLAYER_ACTION",
   dealerAction: "DEALER_ACTION",
   payout: "PAYOUT",

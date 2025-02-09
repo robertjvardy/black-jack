@@ -70,6 +70,7 @@ io.on("connection", (socket) => {
 });
 
 // TODO move this namespace to seperate file and export game instance
+// TODO move the calls to updateGameState inside corresponding functions now that it is exported
 
 const playerNamespace = io.of("/player");
 
@@ -96,13 +97,12 @@ playerNamespace.on("connection", (socket) => {
     updateGameState();
   });
 
-  socket.on("player-ready", async () => {
+  socket.on("player-ready", () => {
     game.onPlayerReady(seatIndex);
-    if (game.checkPlayerReadyStatus()) {
-      game.startRound();
-      updateGameState();
-      game.dealCards();
-    }
+  });
+
+  socket.on("insurance-selection", (data) => {
+    game.insuranceSelection(seatIndex, data.value);
     updateGameState();
   });
 });

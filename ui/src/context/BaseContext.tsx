@@ -27,7 +27,7 @@ export type BaseContextType = {
 
 const defaultGameState = {
   started: false,
-  dealer: { cards: [] },
+  dealer: { cards: [], total: [0] },
   players: [],
   currentRound: { status: ROUND_STATUS_MAP.pendingBets, players: [] },
 };

@@ -3,6 +3,7 @@ import Card from "./card";
 
 class Hand {
   cards: Card[] = [];
+  // TODO suppress this for dealer
   total: number[] = [];
 
   addCard(card: Card) {

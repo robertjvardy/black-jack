@@ -77,10 +77,14 @@ const PlayerControlsProvider = ({
     socket?.emit("player-ready");
   };
 
+  const handleInsuranceSelection = (value: boolean) =>
+    socket?.emit("insurance-selection", { value });
+
   const actions = {
     placeBet: handlePlaceBet,
     cancelBet: handlePlayerCancel,
     readyUp: handlePlayerReady,
+    insuranceSelection: handleInsuranceSelection,
   };
 
   return socket ? (
