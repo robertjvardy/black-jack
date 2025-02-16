@@ -7,7 +7,12 @@ import {
 } from "react";
 import io, { Socket } from "socket.io-client";
 import { API_ADDRESS } from "../shared/constants";
-import { GameStateType } from "shared-resources";
+import {
+  BetDto,
+  GameStateType,
+  InsuranceSelection,
+  playerEventNames,
+} from "shared-resources";
 
 const PLAYER_SOCKET_URL = `${API_ADDRESS}/player`;
 
@@ -64,19 +69,22 @@ const PlayerControlsProvider = ({
   }, [socket]);
 
   const handlePlaceBet = (betAmount: number) => {
-    socket?.emit("place-bet", { betAmount });
+    socket?.emit(playerEventNames.PLACE_BET, new BetDto(betAmount));
   };
 
   const handlePlayerCancel = () => {
-    socket?.emit("cancel-bet");
+    socket?.emit(playerEventNames.CANCEL_BET);
   };
 
   const handlePlayerReady = () => {
-    socket?.emit("player-ready");
+    socket?.emit(playerEventNames.PLAYER_READY);
   };
 
   const handleInsuranceSelection = (value: boolean) =>
-    socket?.emit("insurance-selection", { value });
+    socket?.emit(
+      playerEventNames.INSURANCE_SELECTION,
+      new InsuranceSelection(value)
+    );
 
   const actions = {
     placeBet: handlePlaceBet,

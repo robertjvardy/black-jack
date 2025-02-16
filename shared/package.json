@@ -7,7 +7,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "node scripts/build-types.js && tsc",
-    "watch": "node --watch --watch-path=src scripts/build-types.js"
+    "watch": "node --watch --watch-path=src/dto --watch-path=src/constants --watch-path=src/types  scripts/build-types.js && tsc"
   },
   "keywords": [],
   "author": "",

@@ -16,7 +16,14 @@ import {
   storeSeatKey,
 } from "./localStorageUtils";
 import { API_ADDRESS } from "../shared/constants";
-import { GameStateType, PlayerType, ROUND_STATUS_MAP } from "shared-resources";
+import {
+  baseEventNames,
+  GameStateType,
+  ROUND_STATUS_MAP,
+  SeatIndexDto,
+  SeatInfoDto,
+} from "shared-resources";
+import invariant from "tiny-invariant";
 
 export type BaseContextType = {
   socket?: Socket;
@@ -68,19 +75,14 @@ const BaseProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    const updatePlayerState = (state: PlayerType[]) => {
-      console.log("Player State: ", state);
-      setGameState((prevState) => ({ ...prevState, players: state }));
-    };
-
     const updateGameState = (state: GameStateType) => {
       console.log("Game State: ", state);
       setGameState(state);
     };
 
-    const updateSeatKey = ({ index }: { index: number }) => {
-      console.log("Seat Index: ", index);
-      storeSeatIndex(index);
+    const updateSeatKey = ({ seatIndex }: SeatIndexDto) => {
+      console.log("Seat Index: ", seatIndex);
+      storeSeatIndex(seatIndex);
     };
 
     const handleSeatKeyDenied = () => {
@@ -103,34 +105,43 @@ const BaseProvider = ({ children }: { children: ReactNode }) => {
       socket.on("disconnect", () => {
         console.log(`disconnect`);
       });
-      socket.on("seat-key", ({ seatKey, seatIndex }) => {
+      socket.on(baseEventNames.SEAT_KEY, ({ seatKey, seatIndex }) => {
         console.log(`seat key`, seatKey);
         storeSeatKey(seatKey);
         storeSeatIndex(seatIndex);
         navigate("/playerControls");
       });
-      socket.on("player-update", updatePlayerState);
-      socket.on("update", updateGameState);
-      socket.on("seat-key-validated", updateSeatKey);
-      socket.on("seat-key-denied", handleSeatKeyDenied);
-      socket.on("clear-local-storage", handleClearLocalStorage);
+      socket.on(baseEventNames.UPDATE, updateGameState);
+      socket.on(baseEventNames.SEAT_KEY_VALIDATED, updateSeatKey);
+      socket.on(baseEventNames.SEAT_KEY_DENIED, handleSeatKeyDenied);
+      socket.on(baseEventNames.CLEAR_LOCAL_STORAGE, handleClearLocalStorage);
     }
   }, [socket, navigate]);
 
   const handleStartGame = useCallback(() => {
-    socket?.emit("start-game");
+    socket?.emit(baseEventNames.START_GAME);
   }, [socket]);
+
   const handleAssignPlayer = useCallback(
-    (index: number) => socket?.emit("assign-player", { index }),
+    (seatIndex: number) => {
+      socket?.emit(baseEventNames.ASSIGN_PLAYER, new SeatIndexDto(seatIndex));
+    },
     [socket]
   );
+
   const handleValidateSeatKey = useCallback(() => {
     const seatKey = fetchSeatKey();
+    const seatIndex = fetchSeatIndex();
+    invariant(seatIndex, "missing seat index");
+    invariant(seatKey, "missing seat key");
+
     if (!seatKey) {
-      console.log("here", seatKey);
       navigate("/home");
     }
-    socket?.emit("validate-seat-key", { seatKey });
+    socket?.emit(
+      baseEventNames.VALIDATE_SEAT_KEY,
+      new SeatInfoDto(seatIndex, seatKey)
+    );
   }, [navigate, socket]);
 
   const handleVerifyUserUnassigned = useCallback(() => {
@@ -144,8 +155,11 @@ const BaseProvider = ({ children }: { children: ReactNode }) => {
   }, [navigate]);
 
   const handleLeaveSeat = useCallback(
-    ({ seatIndex, seatKey }: { seatIndex: number; seatKey: string }) => {
-      socket?.emit("leave-seat", { seatIndex, seatKey });
+    ({ seatIndex, seatKey }: SeatInfoDto) => {
+      socket?.emit(
+        baseEventNames.LEAVE_SEAT,
+        new SeatInfoDto(seatIndex, seatKey)
+      );
       navigate("/home");
     },
     [socket, navigate]

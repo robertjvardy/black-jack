@@ -21,4 +21,4 @@ const exports = typeFiles
   .join("\n");
 
 fs.writeFileSync(INDEX_FILE, exports);
-console.log("index.d.ts generated successfully");
+console.log("index.ts generated successfully");
