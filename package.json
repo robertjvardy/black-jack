@@ -1,0 +1,12 @@
+{
+  "name": "blackjack-game",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "typescript": "5.7.2"
+  },
+  "scripts": {
+    "build": "concurrently \"pnpm --filter api build\" \"pnpm --filter ui build\"",
+    "start": "concurrently \"pnpm --filter api start\" \"pnpm --filter ui start\" \"pnpm --filter shared watch\""
+  }
+}

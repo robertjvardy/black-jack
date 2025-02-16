@@ -9,7 +9,10 @@
     "esModuleInterop": true, // Enables default import compatibility.
     "skipLibCheck": true, // Skip type checking for libraries.
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "shared-resources": ["../shared"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

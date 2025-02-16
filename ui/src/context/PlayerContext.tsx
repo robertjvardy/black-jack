@@ -6,8 +6,13 @@ import {
   useState,
 } from "react";
 import io, { Socket } from "socket.io-client";
-import { GameStateType } from "../shared/types";
 import { API_ADDRESS } from "../shared/constants";
+import {
+  BetDto,
+  GameStateType,
+  InsuranceSelection,
+  playerEventNames,
+} from "shared-resources";
 
 const PLAYER_SOCKET_URL = `${API_ADDRESS}/player`;
 
@@ -28,8 +33,6 @@ export const usePlayerControlsContext = () => {
 const PlayerControlsProvider = ({
   children,
   seatKey,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  gameState,
 }: {
   children: ReactNode;
   seatKey: string;
@@ -66,19 +69,22 @@ const PlayerControlsProvider = ({
   }, [socket]);
 
   const handlePlaceBet = (betAmount: number) => {
-    socket?.emit("place-bet", { betAmount });
+    socket?.emit(playerEventNames.PLACE_BET, new BetDto(betAmount));
   };
 
   const handlePlayerCancel = () => {
-    socket?.emit("cancel-bet");
+    socket?.emit(playerEventNames.CANCEL_BET);
   };
 
   const handlePlayerReady = () => {
-    socket?.emit("player-ready");
+    socket?.emit(playerEventNames.PLAYER_READY);
   };
 
   const handleInsuranceSelection = (value: boolean) =>
-    socket?.emit("insurance-selection", { value });
+    socket?.emit(
+      playerEventNames.INSURANCE_SELECTION,
+      new InsuranceSelection(value)
+    );
 
   const actions = {
     placeBet: handlePlaceBet,

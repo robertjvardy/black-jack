@@ -1,4 +1,4 @@
-import { PLAYER_HAND_RESULT_MAP, TWENTY_ONE } from "../shared/constants";
+import { PLAYER_HAND_RESULT_MAP, TWENTY_ONE } from "shared-resources";
 import { calculateHandTotal } from "../shared/utils/cardUtils";
 import Card from "./card";
 

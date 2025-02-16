@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import { useBaseContext } from "../../context/BaseContext";
-import { PlayerType } from "../../shared/types";
 import styles from "./styles.module.scss";
 import { useEffect } from "react";
+import { PlayerType } from "shared-resources";
 
 const Seat = ({ index, present }: { index: number; present: boolean }) => {
   const {

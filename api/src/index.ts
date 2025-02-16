@@ -4,7 +4,15 @@ import { Server } from "socket.io";
 import cors from "cors";
 import Game from "./gameStructure/game";
 import { playerAuthMiddleware } from "./middlewares";
-import { PlayerIndexType } from "./shared/types";
+import {
+  PlayerIndexType,
+  SeatInfoDto,
+  baseEventNames,
+  playerEventNames,
+  SeatIndexDto,
+  BetDto,
+  InsuranceSelection,
+} from "shared-resources";
 
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || "0.0.0.0";
@@ -26,41 +34,43 @@ const io = new Server(httpServer, {
 
 const game = new Game();
 
-export const updateGameState = () => io.emit("update", game.fetchGameState());
+export const updateGameState = () =>
+  io.emit(baseEventNames.UPDATE, game.fetchGameState());
 
 io.on("connection", (socket) => {
   console.log(`Connected ${socket.id}`);
   updateGameState();
 
-  socket.on("assign-player", (data) => {
-    const playerIndex = data.index;
-    const seatKey = game.assignPlayer(playerIndex);
-    console.log(`Player ${data.index} assigned`);
-    socket.emit("seat-key", { seatKey, seatIndex: playerIndex });
-    io.emit("player-update", game.fetchGameState().players);
+  socket.on(baseEventNames.ASSIGN_PLAYER, ({ seatIndex }: SeatIndexDto) => {
+    const seatKey = game.assignPlayer(seatIndex);
+    console.log(`Player ${seatIndex} assigned`);
+    socket.emit(baseEventNames.SEAT_KEY, { seatKey, seatIndex });
+    updateGameState();
   });
 
-  socket.on("start-game", () => {
+  socket.on(baseEventNames.START_GAME, () => {
     game.startGame();
-    io.emit("clear-local-storage");
+    io.emit(baseEventNames.CLEAR_LOCAL_STORAGE);
     updateGameState();
   });
 
-  socket.on("leave-seat", (data) => {
-    const seatIndex = parseInt(data.seatIndex);
-    const seatKey = data.seatKey;
-    game.removePlayer({ seatIndex, seatKey });
-    socket.emit("clear-local-storage");
-    updateGameState();
-  });
+  socket.on(
+    baseEventNames.LEAVE_SEAT,
+    ({ seatIndex, seatKey }: SeatInfoDto) => {
+      game.removePlayer({ seatIndex, seatKey });
+      io.emit(baseEventNames.CLEAR_LOCAL_STORAGE);
+      updateGameState();
+    }
+  );
 
-  socket.on("validate-seat-key", (data) => {
-    console.log("validate-seat-key: ", data.seatKey);
-    const index = game.validateSeatKey(data.seatKey);
+  socket.on(baseEventNames.VALIDATE_SEAT_KEY, ({ seatKey }: SeatInfoDto) => {
+    console.log("validate-seat-key: ", seatKey);
+    const index = game.validateSeatKey(seatKey);
+    // TODO try to check index === seatIndex
     if (index !== undefined) {
-      socket.emit("seat-key-validated", { index });
+      socket.emit(baseEventNames.SEAT_KEY_VALIDATED, { index });
     } else {
-      socket.emit("seat-key-denied");
+      socket.emit(baseEventNames.SEAT_KEY_DENIED);
     }
   });
 
@@ -87,24 +97,27 @@ playerNamespace.on("connection", (socket) => {
     console.log(`Client disconnected: ${socket.id}`);
   });
 
-  socket.on("place-bet", (data) => {
-    game.onPlayerBet(seatIndex, data.betAmount);
+  socket.on(playerEventNames.PLACE_BET, ({ amount }: BetDto) => {
+    game.onPlayerBet(seatIndex, amount);
     updateGameState();
   });
 
-  socket.on("cancel-bet", () => {
+  socket.on(playerEventNames.CANCEL_BET, () => {
     game.onCancelBet(seatIndex);
     updateGameState();
   });
 
-  socket.on("player-ready", () => {
+  socket.on(playerEventNames.PLAYER_READY, () => {
     game.onPlayerReady(seatIndex);
   });
 
-  socket.on("insurance-selection", (data) => {
-    game.insuranceSelection(seatIndex, data.value);
-    updateGameState();
-  });
+  socket.on(
+    playerEventNames.INSURANCE_SELECTION,
+    ({ selection }: InsuranceSelection) => {
+      game.insuranceSelection(seatIndex, selection);
+      updateGameState();
+    }
+  );
 });
 
 // TODO remove after dev

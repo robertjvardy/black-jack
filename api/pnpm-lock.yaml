@@ -15,7 +15,7 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       '@types/node':
-        specifier: ^22.10.2
+        specifier: 22.10.2
         version: 22.10.2
       cors:
         specifier: ^2.8.5
@@ -23,11 +23,14 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.21.2
+      shared-types:
+        specifier: file:../shared
+        version: shared@file:../shared
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
       typescript:
-        specifier: ^5.7.2
+        specifier: 5.7.2
         version: 5.7.2
       uuid:
         specifier: ^11.0.3
@@ -497,6 +500,9 @@ packages:
 
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
+
+  shared@file:../shared:
+    resolution: {directory: ../shared, type: directory}
 
   side-channel-list@1.0.0:
     resolution: {integrity: sha512-FCLHtRD/gnpCiCHEiJLOwdmFP+wzCmDEkc9y7NsYxeF4u7Btsn1ZuwgwJGxImImHicJArLP4R0yX4c2KCrMrTA==}
@@ -1027,6 +1033,10 @@ snapshots:
       - supports-color
 
   setprototypeof@1.2.0: {}
+
+  shared@file:../shared:
+    dependencies:
+      '@types/node': 22.10.2
 
   side-channel-list@1.0.0:
     dependencies:

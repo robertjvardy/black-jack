@@ -1,5 +1,5 @@
+import { CardType } from "shared-resources";
 import Card from "../../../components/Card";
-import { CardType } from "../../../shared/types";
 import styles from "./hand.module.scss";
 
 const Hand = ({

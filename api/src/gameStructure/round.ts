@@ -1,5 +1,8 @@
-import { ROUND_STATUS_MAP } from "../shared/constants";
-import { RoundStatusValuesType, PlayerIndexType } from "../shared/types";
+import {
+  PlayerIndexType,
+  ROUND_STATUS_MAP,
+  RoundStatusValuesType,
+} from "shared-resources";
 import Hand from "./hand";
 
 class Round {
