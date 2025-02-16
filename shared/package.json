@@ -1,0 +1,24 @@
+{
+  "name": "shared-resources",
+  "version": "1.0.0",
+  "description": "Shared types for the ui and api",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "node scripts/build-types.js && tsc",
+    "watch": "node --watch --watch-path=src scripts/build-types.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "glob": "^11.0.1",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "5.7.2"
+  },
+  "dependencies": {
+    "@types/node": "22.10.2"
+  }
+}

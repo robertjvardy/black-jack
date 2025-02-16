@@ -1,5 +1,5 @@
+import { GameStateType } from "shared-resources";
 import { usePlayerControlsContext } from "../../../context/PlayerContext";
-import { GameStateType } from "../../../shared/types";
 import styles from "./insuranceActions.module.scss";
 
 const InsuranceActions = ({

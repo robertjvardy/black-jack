@@ -1,11 +1,14 @@
-import { PlayerIndexType } from "../shared/types";
 import Round from "./round";
 import Player from "./player";
 import Shoe from "./shoe";
 import Hand from "./hand";
 import { updateGameState } from "..";
 import Card from "./card";
-import { ROUND_STATUS_MAP, TWENTY_ONE } from "../shared/constants";
+import {
+  PlayerIndexType,
+  ROUND_STATUS_MAP,
+  TWENTY_ONE,
+} from "shared-resources";
 
 export type GameStateType = {
   started: boolean;

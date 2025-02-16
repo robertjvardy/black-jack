@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import cors from "cors";
 import Game from "./gameStructure/game";
 import { playerAuthMiddleware } from "./middlewares";
-import { PlayerIndexType } from "./shared/types";
+import { PlayerIndexType } from "shared-resources/src/types/player";
 
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || "0.0.0.0";

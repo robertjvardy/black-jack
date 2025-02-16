@@ -6,8 +6,8 @@ import {
   useState,
 } from "react";
 import io, { Socket } from "socket.io-client";
-import { GameStateType } from "../shared/types";
 import { API_ADDRESS } from "../shared/constants";
+import { GameStateType } from "shared-resources";
 
 const PLAYER_SOCKET_URL = `${API_ADDRESS}/player`;
 
@@ -28,8 +28,6 @@ export const usePlayerControlsContext = () => {
 const PlayerControlsProvider = ({
   children,
   seatKey,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  gameState,
 }: {
   children: ReactNode;
   seatKey: string;

@@ -1,9 +1,9 @@
 import styles from "./player.module.scss";
 import { useBaseContext } from "../../../context/BaseContext";
-import { BET_OPTION_MAP, ROUND_STATUS_MAP } from "../../../shared/constants";
+import { BET_OPTION_MAP } from "../../../shared/constants";
 import Chip from "../../../components/Chip";
-import { HandType } from "../../../shared/types";
 import Hand from "./Hand";
+import { HandType, ROUND_STATUS_MAP } from "shared-resources";
 
 const Player = ({
   index,

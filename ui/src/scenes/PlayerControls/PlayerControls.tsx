@@ -4,10 +4,9 @@ import styles from "./styles.module.scss";
 import PlayerControlsProvider from "../../context/PlayerContext";
 import invariant from "tiny-invariant";
 import { fetchSeatIndex, fetchSeatKey } from "../../context/localStorageUtils";
-import { ROUND_STATUS_MAP } from "../../shared/constants";
 import InitialBet from "./components/InitalBet";
-import { PlayerIndexType } from "../../shared/types";
 import Actions from "./components/Actions";
+import { PlayerIndexType, ROUND_STATUS_MAP } from "shared-resources";
 
 const PlayerControls = ({
   seatIndex,

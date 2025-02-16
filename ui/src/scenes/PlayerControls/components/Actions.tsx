@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RoundStatusValuesType } from "../../../shared/types";
 import styles from "./actions.module.scss";
-import { ROUND_STATUS_MAP } from "../../../shared/constants";
 import InsuranceActions from "./InsuranceAction";
 import { fetchSeatIndex } from "../../../context/localStorageUtils";
 import { useBaseContext } from "../../../context/BaseContext";
+import { ROUND_STATUS_MAP, RoundStatusValuesType } from "shared-resources";
 
 const InActive = () => (
   <div className={styles["waiting-text"]}>

@@ -1,6 +1,10 @@
+import {
+  CARD_ORDERS,
+  CARD_SUITS,
+  CardOrderType,
+  TWENTY_ONE,
+} from "shared-resources";
 import Card from "../../gameStructure/card";
-import { CARD_ORDERS, CARD_SUITS, TWENTY_ONE } from "../constants";
-import { CardOrderType } from "../types";
 
 export const compileDeck = (numberOfDecks = 5): Card[] => {
   const deck: Card[] = [];
@@ -48,7 +52,7 @@ export const calculateHandTotal = (hand: Card[]) => {
   const nonAces = handOrders.filter((order) => order !== "A");
 
   const nonAceTotal = nonAces
-    .map((order) => cardOrderMap[order][0])
+    .map((order) => cardOrderMap[order as CardOrderType][0])
     .reduce((acc, curr) => acc + curr, 0);
 
   var acesTotal: number[] = [];

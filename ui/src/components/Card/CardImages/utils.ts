@@ -77,7 +77,7 @@ import kc from "./kc.svg";
 import kd from "./kd.svg";
 import kh from "./kh.svg";
 import ks from "./ks.svg";
-import { CardOrderType, CardSuitType } from "../../../shared/types";
+import { CardOrderType, CardSuitType } from "shared-resources";
 
 const cardSvgMap: Record<string, string> = {
   hiddenCard,

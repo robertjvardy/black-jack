@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import io, { Socket } from "socket.io-client";
-import { GameStateType, PlayerType } from "../shared/types";
 import { useNavigate } from "react-router";
 import {
   fetchSeatIndex,
@@ -16,7 +15,8 @@ import {
   storeSeatIndex,
   storeSeatKey,
 } from "./localStorageUtils";
-import { API_ADDRESS, ROUND_STATUS_MAP } from "../shared/constants";
+import { API_ADDRESS } from "../shared/constants";
+import { GameStateType, PlayerType, ROUND_STATUS_MAP } from "shared-resources";
 
 export type BaseContextType = {
   socket?: Socket;

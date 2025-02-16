@@ -1,4 +1,4 @@
-import { CardOrderType, CardSuitType } from "../../shared/types";
+import { CardOrderType, CardSuitType } from "shared-resources";
 import styles from "./styles.module.scss";
 import HiddenCard from "./CardImages/b.svg";
 import { fetchCardSvg } from "./CardImages/utils";

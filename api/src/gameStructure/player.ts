@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import Card from "./card";
 import Hand from "./hand";
-import { PLAYER_HAND_RESULT_MAP } from "../shared/constants";
+import { PLAYER_HAND_RESULT_MAP } from "shared-resources";
 
 export type PlayerType = typeof Player;
 

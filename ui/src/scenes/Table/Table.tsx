@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import Player from "./components/Player";
 import Loader from "../../components/Loader";
 import Hand from "./components/Hand";
-import { ROUND_STATUS_MAP } from "../../shared/constants";
+import { ROUND_STATUS_MAP } from "shared-resources";
 
 const Table = () => {
   const { gameState } = useBaseContext();
