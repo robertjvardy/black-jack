@@ -1,10 +1,12 @@
+import { PlayerIndexType } from "../types/player";
+
 export class SeatInfoDto {
-  seatIndex: number;
+  seatIndex: PlayerIndexType;
   seatKey: string;
 
-  constructor(seatIndex: number | string, seatKey: string) {
+  constructor(seatIndex: PlayerIndexType | string, seatKey: string) {
     if (typeof seatIndex === "string") {
-      this.seatIndex = parseInt(seatIndex);
+      this.seatIndex = parseInt(seatIndex) as PlayerIndexType;
     } else {
       this.seatIndex = seatIndex;
     }

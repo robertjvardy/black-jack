@@ -1,13 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import Card from "./card";
 import Hand from "./hand";
-import { PLAYER_HAND_RESULT_MAP } from "shared-resources";
+import { PLAYER_HAND_RESULT_MAP, PlayerIndexType } from "shared-resources";
 
 export type PlayerType = typeof Player;
 
 class Player {
   #seatKey?: string;
-  index: number;
+  index: PlayerIndexType;
   present: boolean;
   ready: boolean = false;
   holdings: number = 0;
@@ -17,7 +17,7 @@ class Player {
   splitHands: Hand[] = [];
   insuranceAccepted?: boolean;
 
-  constructor(index: number) {
+  constructor(index: PlayerIndexType) {
     this.index = index;
     this.present = false;
   }

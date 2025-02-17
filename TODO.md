@@ -8,8 +8,7 @@
 
 ## General tasks
 
-- move share types to an npm package to remove code duplication between UI and API packages
-- create parent build and write readme
+- write readme for each project as well as parent
 - add docker
 - investigate: helmet morgan
 

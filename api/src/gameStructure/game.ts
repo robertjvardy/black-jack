@@ -64,7 +64,13 @@ class Game {
     return player.assign();
   }
 
-  removePlayer({ seatIndex, seatKey }: { seatIndex: number; seatKey: string }) {
+  removePlayer({
+    seatIndex,
+    seatKey,
+  }: {
+    seatIndex: PlayerIndexType;
+    seatKey: string;
+  }) {
     const player = this.gameState.players[seatIndex];
     if (!!player) {
       // TODO throw error
@@ -117,9 +123,12 @@ class Game {
   }
 
   checkPlayerInsuranceStatus() {
-    const { players } = this.gameState;
-    return players.every(
-      (player) => !player.present || player.isInsuranceSelectionMade()
+    const { players, currentRound } = this.gameState;
+    const participatingPlayers = players.filter((player) =>
+      currentRound.players.includes(player.index)
+    );
+    return participatingPlayers.every((player) =>
+      player.isInsuranceSelectionMade()
     );
   }
 
