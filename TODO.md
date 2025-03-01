@@ -2,6 +2,7 @@
 
 ## UI tasks
 
+- implement transitions for the cards to flip over when the round is over
 - add modal with fullscreen instructions (press f11 on windows and linux, Press ⌘ + Ctrl + f on mac)
 
 ## API tasks
@@ -17,13 +18,13 @@
 1. Game is Started
 2. Player Joins seat
 3. Player places bet
-4. player readies up
-5. once each present player readies up, hand inProgress state is set to true
+4. Player readies up
+5. Once each present player readies up, hand inProgress state is set to true
 6. Cards are dealt sequentially
 
 ## Continuously available actions
 
-- leave game
+- Leave game
   - yet to implement functionality for when a player leaves a game
   - clear player state
   - prompt for warning
