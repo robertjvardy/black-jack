@@ -7,13 +7,15 @@
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "scripts": {
-    "build": "tsup src/index.ts --dts --format esm,cjs --out-dir dist"
+    "build": "tsup src/index.ts --dts --format esm,cjs --out-dir dist",
+    "generate-index": "node scripts/build-types.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "22.10.2",
+    "glob": "^11.0.1",
     "tsup": "^8.4.0",
     "typescript": "5.7.2"
   },
