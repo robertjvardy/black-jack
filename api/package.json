@@ -2,7 +2,6 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "start": "tsx watch src/index.ts",
@@ -20,7 +19,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "socket.io": "^4.8.1",
-    "shared-resources": "workspace:*",
+    "shared-resources": "file:../shared",
     "typescript": "5.7.2",
     "uuid": "^11.0.3"
   },

@@ -1,4 +1,4 @@
-import { CardOrderType, CardSuitType } from "../shared/types";
+import { CardOrderType, CardSuitType } from "shared-resources";
 
 class Card {
   order: CardOrderType;

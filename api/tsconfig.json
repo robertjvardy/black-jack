@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Node", // Ensures compatibility with Node.js imports.
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "strict": true, // Enable all strict type-checking options.
-    "esModuleInterop": true, // Enables default import compatibility.
-    "skipLibCheck": true, // Skip type checking for libraries.
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {

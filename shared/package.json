@@ -4,21 +4,21 @@
   "description": "Shared types for the ui and api",
   "types": "dist/index.d.ts",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "scripts": {
-    "build": "node scripts/build-types.js && tsc",
-    "watch": "node --watch --watch-path=src/dto --watch-path=src/constants --watch-path=src/types  scripts/build-types.js && tsc"
+    "build": "tsup src/index.ts --dts --format esm,cjs --out-dir dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "glob": "^11.0.1",
-    "rimraf": "^6.0.1",
-    "ts-node": "^10.9.2",
+    "@types/node": "22.10.2",
+    "tsup": "^8.4.0",
     "typescript": "5.7.2"
   },
-  "dependencies": {
-    "@types/node": "22.10.2"
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs"
   }
 }
