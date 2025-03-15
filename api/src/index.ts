@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
-import Game from "./gameStructure/game";
+import Game, { PlayerInsuranceSelectionStatus } from "./gameStructure/game";
 import { playerAuthMiddleware } from "./middlewares";
 import {
   PlayerIndexType,
@@ -114,7 +114,10 @@ playerNamespace.on("connection", (socket) => {
   socket.on(
     playerEventNames.INSURANCE_SELECTION,
     ({ selection }: InsuranceSelection) => {
-      game.insuranceSelection(seatIndex, selection);
+      const status = game.insuranceSelection(seatIndex, selection);
+      if (status === PlayerInsuranceSelectionStatus.complete) {
+        game.evaluateInsurance();
+      }
       updateGameState();
     }
   );

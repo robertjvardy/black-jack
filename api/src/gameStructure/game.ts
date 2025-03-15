@@ -31,6 +31,16 @@ const defaultGameState = {
   currentRound: new Round(),
 };
 
+export type PlayerInsuranceSelectionStatusType = "COMPLETE" | "INCOMPLETE";
+
+export const PlayerInsuranceSelectionStatus: Record<
+  string,
+  PlayerInsuranceSelectionStatusType
+> = {
+  complete: "COMPLETE",
+  incomplete: "INCOMPLETE",
+} as const;
+
 class Game {
   private gameState: GameStateType = defaultGameState;
   private shoe = new Shoe();
@@ -122,7 +132,7 @@ class Game {
     return players.every((player) => !player.present || player.ready);
   }
 
-  checkPlayerInsuranceStatus() {
+  isInsuranceSelectionsCompleted() {
     const { players, currentRound } = this.gameState;
     const participatingPlayers = players.filter((player) =>
       currentRound.players.includes(player.index)
@@ -150,6 +160,7 @@ class Game {
     const delay = 1000;
 
     participatingPlayers.forEach((playerIdx, index) => {
+      // TODO convert this to use socket.io setTimeout api
       setTimeout(() => {
         players[playerIdx].addCard(this.shoe.pullCard());
         updateGameState();
@@ -193,12 +204,16 @@ class Game {
     );
   }
 
-  insuranceSelection(index: number, value: boolean) {
+  insuranceSelection(
+    index: number,
+    value: boolean
+  ): PlayerInsuranceSelectionStatusType {
     this.gameState.players[index].insuranceSelection(value);
-    if (this.checkPlayerInsuranceStatus()) {
-      this.evaluateInsurance();
+    if (this.isInsuranceSelectionsCompleted()) {
+      return PlayerInsuranceSelectionStatus.complete;
     }
     updateGameState();
+    return PlayerInsuranceSelectionStatus.incomplete;
   }
 
   evaluateInsurance() {
@@ -206,19 +221,25 @@ class Game {
     const presentPlayers = this.gameState.players.filter(
       (player) => player.present
     );
+    const currentRound = this.gameState.currentRound;
 
     if (dealerBlackJack) {
       presentPlayers.forEach((player) => {
         player.settleInsurance(dealerBlackJack);
         player.settleAllHands(TWENTY_ONE);
       });
-      // TODO transition to payout here
-      // TODO delay the round reset so the UI can show dealer card and payout
+
+      // TODO
+      // 1 update state
+      currentRound.setStatus(ROUND_STATUS_MAP.payout);
+      // 2 send update to the UI
+      updateGameState();
+      // 3 set timeout for card reveal animation and player payout
+
+      // 4 reset the round
       this.resetRound();
     } else {
-      this.gameState.currentRound.setStatus(
-        ROUND_STATUS_MAP.dealerBlackJackCheck
-      );
+      currentRound.setStatus(ROUND_STATUS_MAP.dealerBlackJackCheck);
       updateGameState();
     }
   }
